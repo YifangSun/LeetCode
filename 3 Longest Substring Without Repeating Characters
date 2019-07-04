@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int i,maxlen,start,len,nowlen;
+        maxlen = 0;
+        start = 0;
+        len = s.size();
+        vector<int> d(256,-1);
+        for(i=0;i<len;i++){
+            if( d[s[i]] >= start )
+                    start =d[s[i]] +1;
+            nowlen = i - start +1;
+            printf("%d %d\n",i,nowlen);
+            maxlen = max(maxlen, nowlen);
+            d[s[i]] = i;
+        }
+        return maxlen;
+
+    }
+};
