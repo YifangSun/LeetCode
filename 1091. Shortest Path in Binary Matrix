@@ -1,0 +1,45 @@
+class Solution {
+public:
+    bool isin(int x, int y, int n){
+        if(x>=0 && x<n && y>=0 && y<n) return true;
+        else return false;
+    }
+    
+    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+        
+        if(grid[0][0]) return -1;
+        typedef pair<int,int> pr ;
+        int n = grid.size();
+        int d[n][n];
+        memset(d,-1,sizeof(d));
+        int dx[] = {-1,0,1},dy[] = {-1,0,1};
+        pr p0(0,0);
+        queue<pr> q;
+        q.push(p0);
+        d[0][0] = 1;
+        while( !q.empty() ){
+            pr p1 = q.front(); q.pop();
+            
+            
+            
+            for(int i=-1;i<=1;i++){
+                for(int j=-1;j<=1;j++){
+                    if(!i && !j) continue;
+                    int x =  p1.first + i;
+                    int y =  p1.second + j;
+                    if( isin(x,y,n) && !grid[x][y] && d[x][y]==-1   ){
+                        //cout << "x:"<<x <<" y:" <<y << endl;
+                        
+                        d[x][y] = d[p1.first][p1.second] +1;
+                        
+                        if(x==n-1 && y==n-1) return d[n-1][n-1];
+                        pr p(x,y);
+                        q.push(p);
+                        
+                    };
+                };            
+            }
+        }
+        return -1;
+    }
+};
