@@ -1,0 +1,30 @@
+class Solution {
+public:
+    vector<string> generateParenthesis(int n) {
+         vector<string> ans;
+        if(n==0)    return ans;
+        else {
+            dfs(ans,"",n,0,0);
+            return ans;
+        }
+        
+    }
+    
+    void dfs(vector<string>& ans, string str, int n, int left, int right){
+        if(right==n && left==n){
+            ans.push_back(str);
+            return;
+        }
+        
+        if(left<n){
+            dfs(ans,str+"(",n,left+1,right);
+        }
+        
+        if(right<left){
+            dfs(ans,str+")",n,left,right+1);
+        }
+        
+        return;
+    }
+    
+};
