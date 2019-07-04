@@ -1,0 +1,54 @@
+class Solution {
+public:
+    string intToRoman(int num) {
+        int j,i=0;
+        int a[5];
+        string s = "\0";
+        while(num){
+            a[i++] = num%10;
+            num /= 10;
+        }
+        
+        while(i>=0){
+            i--;
+            if(i==3){//千位
+                if(a[i]<=3)
+                    for(j=a[i];j>0;j--) s +='M';
+            }else if(i==2){//百位
+                if(a[i]<=3)
+                    for(j=a[i];j>0;j--) s +='C';
+                else if(a[i] == 4)
+                    s += "CD";
+                else if(a[i] == 9)
+                    s += "CM";
+                else{
+                    s += "D";
+                    for(j=a[i]-5;j>0;j--) s +='C';
+                }
+            }else if(i==1){//十位
+                if(a[i]<=3)
+                    for(j=a[i];j>0;j--) s +='X';
+                else if(a[i] == 4)
+                    s += "XL";
+                else if(a[i] == 9)
+                    s += "XC";
+                else{
+                    s += "L";
+                    for(j=a[i]-5;j>0;j--) s +='X';
+                }
+            }else if(i==0){//个位                
+                if(a[i]<=3)
+                    for(j=a[i];j>0;j--) s +='I';
+                else if(a[i] == 4)
+                    s += "IV";
+                else if(a[i] == 9)
+                    s += "IX";
+                else{
+                    s += "V";
+                    for(j=a[i]-5;j>0;j--) s +='I';
+                }
+            } 
+        }
+        return s; 
+    }
+};
