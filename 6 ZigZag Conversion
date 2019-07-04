@@ -1,0 +1,36 @@
+class Solution {
+public:
+   string convert(string s, int R) {
+        if(R == 1) return s;
+        
+        string ans = "";
+        int v_index = 0, mul = 1, initial;
+        while(v_index < s.length()){
+            ans += s[v_index];
+            v_index = mul*(R + R - 2);
+            mul += 1;
+        }
+        for(int index = 1; index + 1 < R && index < s.length(); index++){
+            v_index = index;
+            initial = index;
+            while(v_index < s.length()){
+                ans += s[v_index];
+                v_index = initial + 2*(R - index - 1);
+                if(v_index < s.length()){
+                    ans += s[v_index];
+                    v_index = initial + R + R - 2;
+                    initial = v_index;
+                }
+            }
+        }
+        v_index = R - 1;
+        mul = 1;
+        while(v_index < s.length()){
+            ans += s[v_index];
+            v_index = (R - 1) + mul*(R + R - 2);
+            mul += 1;
+        }
+        
+        return ans;
+    }
+};
