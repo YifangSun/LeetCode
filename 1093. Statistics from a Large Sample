@@ -1,0 +1,54 @@
+class Solution {
+public:
+    vector<double> sampleStats(vector<int>& count) {
+        double min=256,max=0,mean=0,med=0,mode=0,nowMed=0;
+        int modeNums=0,len=count.size(),prev=0,cp=0;
+        double sum=0;
+        vector<double> ans;
+        pair<int,int> p1;
+        queue< pair<int,int> > q;
+        for(int i=0;i<len;i++){
+            if(count[i]){
+				sum += i*count[i]; 
+			
+				/***********get minimum***********/
+                if(min==256)    min=i;
+				
+				/***********get maximum***********/
+                max = i;
+				
+				/***********get median***********/
+				//get the position of median
+				//"prev" is half of total count
+				//"cp" is total count 
+                cp += count[i];
+                p1 = make_pair( i,count[i] ); //first:数字    second:个数
+                q.push(p1);
+                while( prev < (cp+1)/2 ){    
+                    p1 = q.front();
+                    q.pop();
+                    nowMed = p1.first;
+                    prev += p1.second;
+                }     
+				
+				/***********get mode***********/
+                if(count[i]>modeNums){
+                    mode=i;
+                    modeNums=count[i];
+                }
+                
+            }//end of if(count[i])
+        }//end of for(int i=0;i<len;i++)
+		
+		/***********get mean&median***********/
+        mean = (double)(sum/cp);
+        med = ( (cp&1)==0 && (prev==((cp+1)/2)) )? (double)(nowMed+q.front().first)/2  :  nowMed  ;  
+
+        ans.push_back(min);
+        ans.push_back(max);
+        ans.push_back(mean);
+        ans.push_back(med);
+        ans.push_back(mode);
+        return ans;
+    }
+};
