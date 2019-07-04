@@ -1,0 +1,18 @@
+class Solution {
+public:
+    void duplicateZeros(vector<int>& arr) {
+        int len = arr.size(),j;
+        for(int i=len-2;i>=0;i--){
+            
+            if(arr[i] == 0){
+                //cout << i << endl;
+                for(j=len-1;j>i+1;j--){
+                    //cout << "j:" << j << endl;
+                    arr[j] = arr[j-1];
+                }
+                arr[i+1] = 0;
+            }
+        }
+        return ;
+    }
+};
