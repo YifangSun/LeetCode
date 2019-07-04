@@ -1,0 +1,34 @@
+class Solution {
+public:
+    
+    vector<string> sss;
+    
+    string a[10] = {
+        {"\0"},{"\0"},{"abc"},{"def"},{"ghi"},{"jkl"},{"mno"},{"pqrs"},{"tuv"},{"wxyz"}
+    };
+    
+    vector<string> letterCombinations(string digits) {
+        if(digits.size() == 0) return sss;
+        string temp;
+        vector<string> book;
+        for(int i=0;i<digits.size();i++){
+            book.push_back( a[digits[i]-'0'] );  
+        }
+        helper(temp,book,0);
+        return sss;
+    }
+    
+    void helper(string temp, vector<string>& book, int cnt){
+        if(cnt == book.size() ){ //结束，返回
+            sss.push_back(temp);
+            return; 
+        }
+        
+        for(int i=0;i<book[cnt].size();i++){
+            temp.push_back(book[cnt][i]);
+            helper(temp,book,cnt+1);
+            temp.pop_back();  
+        }
+    }
+    
+};
