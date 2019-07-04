@@ -1,0 +1,27 @@
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        
+        string t = "$#";
+        for(int i=0;i<s.size();++i){
+            t += s[i];
+            t += "#";
+        }
+        vector<int> p(t.size(),0);
+        int ub=0,cn=0,c=0,r=0;
+        for(int i=1;i<t.size();++i){
+            p[i] = ub>i ? min(p[2*cn-i],ub-i) : 1;
+            while(t[i+p[i]] == t[i-p[i]]) ++p[i];
+            if(ub<i+p[i]){
+                ub = i+p[i];
+                cn = i;
+            }
+            if(r<p[i]){
+                r = p[i];
+                c = i;
+            }
+        }
+        return s.substr((c-r)/2,r-1);
+
+    }
+};
