@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int firstMissingPositive(vector<int>& nums) {
+        
+        if(nums.size() == 0) return 1;
+        
+        int pos,len = nums.size();
+        sort(nums.begin() , nums.end());
+        
+        for(pos=0;pos<len;pos++){
+            if(nums[pos] >=1 ) break;
+        }
+        if(pos == len) return 1;
+        if(nums[pos] != 1) return 1;
+        if(pos == len-1) return 2;
+        
+
+        while( pos < len-1 ){
+            if(nums[pos+1]-nums[pos] > 1) return nums[pos]+1;
+            pos++;
+            cout << nums[pos] <<endl;
+        }
+        return nums[pos]+1;
+    }
+};
