@@ -1,0 +1,48 @@
+class Solution {
+public:
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        int n1,n2,n,m,m1,m2,x,y;
+        double ans=0;;
+        if(nums1.size() > nums2.size()) swap(nums1,nums2);
+        n1 = nums1.size();
+        n2 = nums2.size();
+        n = n1 + n2;
+        m =(n+1)/2;
+        if(n1==0)     //n1只有0个
+            return ans = (n&1)? nums2[m-1] : (double)( nums2[m-1] + nums2[m] )/2;
+
+        if(nums2[m-1] <= nums1[0]){//m全部从nums2取
+            if(n2 == m) 
+                return ans = (n&1)? nums2[m-1] : (double)(nums2[m-1] + nums1[0])/2;
+            else 
+                return ans = (n&1)? nums2[m-1] : (double)(nums2[m-1] + min(nums1[0],nums2[m]) )/2;
+        }
+        
+        if(n1 == m) //m全部从nums1取，且m恰好为n1
+            if(nums1[m-1]<=nums2[0]) 
+                return ans = (n&1)? nums1[m-1] : (double)(nums1[m-1] + nums2[0])/2;
+            else if(nums1[m-1] == nums2[0]) 
+                return ans = nums1[m-1];
+        
+        if(n1 < m)    //m全部从nums1取，且m小于n1
+            if(nums1[n1-1] <= nums2[m-n1])
+                return ans = (n&1)? max( nums1[n1-1] , nums2[m-n1-1]) : (double)(max(nums1[n1-1],nums2[m-n1-1])+ nums2[m-n1])/2 ;
+								
+        if(n1==1)
+            return ans = (n&1)? max(nums1[0],nums2[m-2]) : (double)( max(nums1[0],nums2[m-2]) + nums2[m-1] )/2;
+        
+        x=1;
+        y=n1-1; //二分边界
+        m1 = (x+y)/2;
+        m2 = m - m1;
+        while(x<y){
+            if(nums1[m1-1] <= nums2[m2] && nums2[m2-1] <= nums1[m1])  break;
+            else if(nums1[m1-1] > nums2[m2])	y = m1;
+            else if(nums2[m2-1] > nums1[m1])	x = m1 + 1;
+
+            m1 = x + (y-x)/2;
+            m2 = m - m1;
+        }
+        return ans = (n&1)? max(nums1[m1-1],nums2[m2-1]) : (double)( max(nums1[m1-1],nums2[m2-1]) + min(nums1[m1],nums2[m2]) )/2;
+    }
+};
