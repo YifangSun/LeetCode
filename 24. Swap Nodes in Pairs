@@ -1,0 +1,57 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        if(!head) return head;
+        if(!head->next) return head;
+        int t;
+        ListNode* pp = head;
+        ListNode* lastend;
+        ListNode* p1 = head;
+        ListNode* p2 = head;
+        p2 = p2->next->next;
+        
+        //**************************
+        //pp = head; while(pp){cout << pp->val;pp = pp->next;} cout << endl;
+        //**************************
+        
+        p1->next->next = p1;
+        head = p1->next;
+        lastend = p1;
+        p1->next = p2;
+
+        p1 = p2;
+        if(!p2 ||!p2->next) return head;
+        p2 = p2->next->next;
+        
+        //t = p2?p2->val:0;   cout << p1->val << " "<< t << endl;
+        
+        //**************************
+        //pp = head; while(pp){cout << pp->val;pp = pp->next;} cout << endl;
+        //**************************
+        
+        while(p1){
+            //cout << p1->val << " "<< endl;
+            
+            lastend->next = p1->next;
+            lastend = p1;
+            
+            p1->next->next = p1;
+            p1->next = p2;
+            
+            p1 = p2;
+            if(!p2 ||!p2->next) return head;
+            p2 = p2->next->next;
+            
+        }
+        //pp = head; while(pp){cout << pp->val;pp = pp->next;} cout << endl;
+        return head;
+    }
+};
