@@ -1,0 +1,52 @@
+class Solution {
+public:
+    bool isMatch(string s, string p) {
+        int lens = s.size();
+        int lenp = p.size();
+        
+        if(lens==0 && lenp==0) return true;
+        else if(lens>0 && lenp==0) return false;
+        else if(lens==0 && lenp>0){
+            for(auto a:p) if(a!='*') return false;
+            return true;
+        }
+        
+        bool table[lens+1][lenp+1];
+        table[0][0]=true;
+        int i=0;
+        while(p[i]=='*' && i<lenp){
+            table[0][i+1] = true;
+            i++;
+        }
+        while(i<lenp){
+            table[0][i+1] = false;
+            i++;
+        }
+        int j=0;
+        while(j<lens){
+            table[j+1][0] = false;
+            j++;
+        }
+        
+        for(j=0;j<lens;j++){
+            for(i=0;i<lenp;i++){
+                if( s[j]==p[i] || p[i]=='?' )   
+                    table[j+1][i+1]=table[j][i];
+                else if( p[i]=='*' )    
+                    table[j+1][i+1]=table[j+1][i] | table[j][i+1];
+                else
+                    table[j+1][i+1]=false;
+            }
+        }
+        /*
+        for(j=0;j<=lens;j++){
+            for(i=0;i<=lenp;i++){
+                cout << table[j][i] << '\t';
+            }
+            cout << endl;
+        }
+        */
+        
+        return table[lens][lenp];
+    }
+};
