@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int myAtoi(string str) {
+        
+        int start=0,flag=1,ans;
+        long long int y = 0;
+        for(int i=0;i<str.length();i++){
+            if(!start){
+                if(str[i] == '-'){
+                    start = 1;
+                    flag = -1;
+                }else if(str[i] == '+'){
+                    start = 1;
+                }else if( str[i]>=48 && str[i]<=57 ){
+                    start = 1;
+                    y *= 10;
+                    y += (str[i]-48);
+                }else if(str[i]==' '){
+                    continue; 
+                }
+                else {
+                    return 0;
+                     }
+                    
+            }else{
+                if( str[i]>=48 && str[i]<=57 ){
+                    y *= 10;
+                    y += (str[i]-48);
+                    printf("%ld\n",y);
+                    if(flag==1 && y>=2147483647) return 2147483647;
+                    if(flag==-1 && y>=2147483648) return -2147483648;
+                }else{
+                    return flag*(int)y;
+                }
+            }
+        }//for结束
+        return flag*(int)y;  
+    }
+};
