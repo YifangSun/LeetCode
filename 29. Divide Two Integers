@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int divide(int dividend, int divisor) {
+        long long aDividend = dividend;
+        long long aDivisor = divisor;
+        
+        bool aNegative = (aDividend < 0) != (aDivisor < 0);
+        if (aDividend < 0) { aDividend = -aDividend; }
+        if (aDivisor < 0) { aDivisor = -aDivisor; }
+        
+        long long aResult = 0;
+        
+        while (aDividend >= aDivisor) {
+            
+            long long aAdd = 1;
+            long long aTemp = aDivisor;
+            
+            while ((aTemp << 1) < aDividend) {
+                aTemp = (aTemp << 1);
+                aAdd = (aAdd << 1);
+            }
+            
+            aResult += aAdd;
+            aDividend -= aTemp;
+        }
+        
+        if (aNegative) { aResult = -aResult; }
+        if (aResult > 2147483647) { aResult = 2147483647; }
+        
+        return aResult;
+        
+    }
+};
