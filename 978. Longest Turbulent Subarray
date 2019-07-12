@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int maxTurbulenceSize(vector<int>& A) {
+        int len = A.size();
+        if(len < 2) return len;
+        else if(len == 2){
+            if(A[0] == A[1])    return 1;
+            else    return 2;
+        }
+        if(min_element(A.begin(), A.end()) == max_element(A.begin(), A.end()) )
+            return 1;
+        vector<int> d(len,2);
+    
+        for(int i=2; i<len; i++){
+            if( (A[i-2]>A[i-1]&&A[i-1]<A[i]) 
+            ||  (A[i-2]<A[i-1]&&A[i-1]>A[i])  )
+                d[i] = d[i-1] + 1;
+        }
+        return *max_element(d.begin(), d.end());
+    }
+};
