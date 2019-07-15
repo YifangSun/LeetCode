@@ -9,18 +9,18 @@ public:
         queue< pair<int,int> > q;
         for(int i=0;i<len;i++){
             if(count[i]){
-				sum += i*count[i]; 
+		sum += i*count[i]; 
 			
-				/***********get minimum***********/
+		/***********get minimum***********/
                 if(min==256)    min=i;
 				
-				/***********get maximum***********/
+		/***********get maximum***********/
                 max = i;
 				
-				/***********get median***********/
-				//get the position of median
-				//"prev" is half of total count
-				//"cp" is total count 
+		/***********get median***********/
+		//get the position of median
+		//"prev" is half of total count
+		//"cp" is total count 
                 cp += count[i];
                 p1 = make_pair( i,count[i] ); //first:数字    second:个数
                 q.push(p1);
@@ -31,7 +31,7 @@ public:
                     prev += p1.second;
                 }     
 				
-				/***********get mode***********/
+		/***********get mode***********/
                 if(count[i]>modeNums){
                     mode=i;
                     modeNums=count[i];
@@ -40,7 +40,7 @@ public:
             }//end of if(count[i])
         }//end of for(int i=0;i<len;i++)
 		
-		/***********get mean&median***********/
+	/***********get mean&median***********/
         mean = (double)(sum/cp);
         med = ( (cp&1)==0 && (prev==((cp+1)/2)) )? (double)(nowMed+q.front().first)/2  :  nowMed  ;  
 
