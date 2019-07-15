@@ -1,0 +1,29 @@
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        unordered_map<int, vector<int>> m;
+        vector<int> path(numCourses,0);
+        vector<int> visit(numCourses,0);
+        int i,j,temp;
+ 
+        for(i=0; i<prerequisites.size(); i++)
+            m[ prerequisites[i][0] ].push_back( prerequisites[i][1] );
+        
+        for(i=0; i<numCourses; i++)
+            if( visit[i]==0 && m.count(i) )  //若i在map中
+                if(helper( m, i, path, visit )) return false;
+        
+        return true;
+    }
+    
+    bool helper(unordered_map<int,vector<int>>& m, int i, vector<int>& path, vector<int>& visit){
+        visit[i] = 1;
+        path[i] = 1;
+        for(auto x:m[i]){
+            if( path[x]==1 )    return true;
+            if( helper(m, x, path, visit) )     return true;
+        }
+        path[i] = 0;
+        return false;
+    }
+};
