@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int numSquares(int n) {
+        vector<int> dic;
+        queue<int> q,next;
+        int ans = 1;
+        for(int i=1;  ; i++){
+            if(i*i > n)
+                break;
+            dic.push_back(i*i);
+        }
+        /*for(int aa:dic)
+            cout << aa << ' ';
+        cout << endl;*/
+        q.push(n);
+        while(!q.empty()){
+            int temp = q.front();
+            q.pop();
+            for(int i=dic.size()-1; i>=0; i--){
+                if( dic[i]<temp )    
+                    next.push( temp-dic[i] );
+                else if( dic[i]==temp ) 
+                    return ans;
+            }
+            if(q.empty()){
+                q.swap(next);
+                ans++;
+            }
+        }
+        return 0;
+    }
+};
