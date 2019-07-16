@@ -30,3 +30,24 @@ public:
         return 0;
     }
 };
+
+/*************
+ * Solution 2
+/*************
+class Solution {
+public:
+    int numSquares(int n) {
+	   static vector<int> dp(490001,490001);
+       static int max_n_so_far=1; 
+       if(n<max_n_so_far)
+           return dp[n];
+        
+        dp[0]=0;
+        for(int i=max_n_so_far;i<=n;i++)
+            for(int j=1;j*j<=i;j++)
+                dp[i]=min(dp[i],1+dp[i-j*j]);
+        
+        max_n_so_far=max(n,max_n_so_far);
+        return dp[n];
+    }
+};
