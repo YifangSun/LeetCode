@@ -1,3 +1,6 @@
+/*************
+ * Solution 1
+/*************
 class Solution {
 public:
     int numSquares(int n) {
@@ -31,13 +34,14 @@ public:
     }
 };
 
+
 /*************
  * Solution 2
 /*************
 class Solution {
 public:
     int numSquares(int n) {
-	   static vector<int> dp(490001,490001);
+       static vector<int> dp(490001,490001);
        static int max_n_so_far=1; 
        if(n<max_n_so_far)
            return dp[n];
