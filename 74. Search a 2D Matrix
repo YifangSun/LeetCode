@@ -1,0 +1,49 @@
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int row = matrix.size();
+        if( row==0 ) return false;
+        int col = matrix[0].size();
+        if( col==0 ) return false;
+        
+        if( target<matrix[0][0] )   return false;
+        if( target>matrix[row-1][col-1] )   return false;
+        
+        int i=0;
+        while( i<row-1 && target>=matrix[i+1][0] ){
+            i++;
+            //cout << "左边界循环 i: " << i << endl;
+        }
+        int j=row-1;
+        while( target<matrix[j][0] ){
+            j--;
+            //cout << "右边界循环 j: " << j << endl;
+        }
+        if(i<j) return false;
+        for(int k=i; k<=j; k++){
+            //cout<< "主循环 k: " << k << endl;
+            if( search(matrix[k],target) ) return true;
+        }
+        return false;
+    }
+    
+    bool search( vector<int>& array, const int& target ){
+        int m;
+        int r = array.size()-1;
+        
+        int l = 0;
+        if(array.back() < target)   return false;
+
+        while(l<r){
+            //cout << "搜索循环 l: "<< l << " r: " << r << endl;
+            m = l + (r-l)/2;
+            if(array[m] < target) l = m+1;
+            else if(array[m] > target) r = m;
+            else {
+                return true;
+            }
+        }
+        if(r==l) return array[r]==target;
+        return false;
+    }
+};
