@@ -1,3 +1,6 @@
+/**********
+ * https://leetcode.com/problems/ugly-number-ii/discuss/336976/c%2B%2B-the-fastest-solution-for-this-problem
+ *********/
 class Solution {
 public:
     #define min(x,y) (x < y ? x : y)
@@ -16,7 +19,3 @@ public:
     return arr[n-1];
     }
 };
-
-/**********
- * https://leetcode.com/problems/ugly-number-ii/discuss/336976/c%2B%2B-the-fastest-solution-for-this-problem
- *********/
