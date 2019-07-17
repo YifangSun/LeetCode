@@ -1,0 +1,22 @@
+class Solution {
+public:
+    #define min(x,y) (x < y ? x : y)
+
+    int nthUglyNumber(int n) {
+    static int arr[1691] = {[0]= 1},
+    i  = 1, i2 = 0, i3 = 0, i5 = 0,
+    n2 = 2, n3 = 3, n5 = 5;
+  
+    for (; i < n; i++) {
+        arr[i] = min(min(n2, n3), n5);
+        if (arr[i] == n2) n2 = 2 * arr[++i2];
+        if (arr[i] == n3) n3 = 3 * arr[++i3];
+        if (arr[i] == n5) n5 = 5 * arr[++i5];
+    }
+    return arr[n-1];
+    }
+};
+
+/**********
+ * https://leetcode.com/problems/ugly-number-ii/discuss/336976/c%2B%2B-the-fastest-solution-for-this-problem
+ *********/
