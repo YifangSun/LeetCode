@@ -1,0 +1,56 @@
+//*************
+//* Solution 1
+//*************
+class Solution {
+public:
+    bool isValid(string S) {
+	    if (S.size() % 3) return false;
+        stack<bool> st;
+        for (char c : S) {
+            switch (c) {
+                case 'a': st.push(false); break;
+                case 'b': if (st.empty() || st.top()) return false; st.top() = true; break;
+                case 'c': if (st.empty() || ! st.top()) return false; st.pop(); break;
+                default: return false;
+            }
+        }
+        return st.empty();
+    }
+};
+
+//*************
+//* Solution 2
+//*************
+class Solution {
+public:
+    bool isValid(string S) {
+        int len = S.size();
+        if(len==3 && S == "abc") return true;
+        if(len==0)    return false;
+        if(len%3 != 0)  return false;
+        assert(len>=3 && len%3==0);
+        
+        int r = len-1, l = 0;
+        
+
+            if(S.substr(l,3) == "abc"){
+                printf("1 ");
+                return isValid( S.substr(l+3));
+            }else if(S.substr(r-2,3) == "abc"){
+                printf("2 ");
+                return isValid( S.substr(l,len-3) );
+            }else if(S.substr(l,2) == "ab" && S[r] == 'c'  ){
+                printf("3 ");
+                return isValid( S.substr(l+2,len-3) );
+            }else if(S[l] = 'a' && S.substr(r-1,2) == "bc"){
+                printf("4 ");
+                return isValid( S.substr(l+1,len-3) );
+            }else if(S[l] = 'a' && S[r] == 'c'){
+                printf("5 ");
+                for(int i=l+4; i<=r-4; i++){
+                    if( S[i] = 'b' && isValid(S.substr(l+1,i-l-1)) && isValid(S.substr(i+1,r-i-1)))  return true;
+                }
+            }
+        return false;
+    }
+};
