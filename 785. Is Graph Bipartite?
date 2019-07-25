@@ -1,0 +1,30 @@
+class Solution {
+public:
+    bool isBipartite(vector<vector<int>>& graph) {
+        int len = graph.size();
+        if(len == 0)    return false;
+        int d[len];
+        memset(d,0,sizeof(d));
+        queue<int> q;
+        for( int i =0; i<len; i++ ){
+            if(!d[i]){
+                d[i] = 1;
+                q.push(i);
+            } 
+            while(!q.empty()){     
+                int temp = q.front();
+                q.pop();
+                for( auto aa:graph[temp] ){
+                    if( d[aa] ){
+                        if( d[aa] == d[temp] )
+                            return false;
+                    }else if(!d[aa]){
+                        d[aa] = 3 - d[temp];
+                        q.push( aa );
+                    }
+                }
+            }  
+        }
+        return true;  
+    }
+};
