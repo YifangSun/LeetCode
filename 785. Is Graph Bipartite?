@@ -3,18 +3,18 @@ public:
     bool isBipartite(vector<vector<int>>& graph) {
         int len = graph.size();
         if(len == 0)    return false;
-        int d[len];
+        int d[len];     // status 0/1/2, means no visit/ subset A /subset B
         memset(d,0,sizeof(d));
         queue<int> q;
         for( int i =0; i<len; i++ ){
-            if(!d[i]){
+            if(!d[i]){  // if havn't visit, start bfs
                 d[i] = 1;
                 q.push(i);
             } 
             while(!q.empty()){     
-                int temp = q.front();
+                int temp = q.front();   // now, we'r visiting node "temp"
                 q.pop();
-                for( auto aa:graph[temp] ){
+                for( auto aa:graph[temp] ){ // for every node that connect with "temp"
                     if( d[aa] ){
                         if( d[aa] == d[temp] )
                             return false;
@@ -23,7 +23,7 @@ public:
                         q.push( aa );
                     }
                 }
-            }  
+            }   // end of BFS   
         }
         return true;  
     }
