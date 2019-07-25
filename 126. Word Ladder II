@@ -1,0 +1,57 @@
+class Solution { /* two-end BFS+DFS:32ms */
+public:
+    vector<vector<string>> findLadders(string bw, string ew, vector<string>& wl) {
+        int N = bw.length(), isBreak = 0, isReverse = 0;
+        vector<vector<string>> ret;
+        unordered_set<string> set(wl.begin(), wl.end()), sbegin = {bw}, vend = {ew}, *p1 = &sbegin, *p2 = &vend;
+        unordered_multimap<string, string> m;
+        if(set.find(ew) != set.end()) {
+            while(!p1->empty() && !p2->empty()) {
+                if(isBreak) break;
+                if(p1->size() > p2->size()) {
+                    swap(p1, p2);
+                    isReverse = !isReverse;
+                }
+                for(auto &str : *p1) set.erase(str);
+                unordered_set<string> stmp;
+                for(auto it = p1->begin(); it != p1->end(); it++) {
+                    string str = *it;
+                    for(int j = 0; j < N; j++) {
+                        char cj = str[j];
+                        for(char c = 'a'; c <= 'z'; c++) {
+                            str[j] = c;
+                            auto f = p2->find(str);
+                            if(f != p2->end()) isBreak = 1;
+                            f = set.find(str);
+                            if(f != set.end()) {
+                                stmp.insert(str);
+                                if(!isReverse) m.insert(pair<string, string>(*it, str));
+                                else m.insert(pair<string, string>(str, *it));
+                            }
+                        }
+                        str[j] = cj;
+                    }
+                }
+                swap(*p1, stmp);
+            }
+        }
+        if(isBreak) {
+            vector<string> vtmp = {bw};
+            helper(bw, ew, vtmp, m, ret);
+        }
+        return ret;
+    }
+
+    void helper(string &s, string &ew, vector<string> &v, unordered_multimap<string, string> &m, vector<vector<string>> &ret) {
+        if(s == ew) {
+            ret.push_back(v);
+            return;
+        }
+        auto range = m.equal_range(s);
+        for(auto it = range.first; it != range.second; it++) {
+            v.push_back(it->second);
+            helper(it->second, ew, v, m, ret);
+            v.pop_back();
+        }
+    }
+};
