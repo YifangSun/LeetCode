@@ -1,0 +1,45 @@
+class Solution {
+public:
+    vector<int> shortestAlternatingPaths(int n, vector<vector<int>>& red_edges, vector<vector<int>>& blue_edges) {
+        vector<int> ans(n, 999999);
+        int level = 0;
+        int red_d[n],blue_d[n];
+        memset(red_d, 0, sizeof(red_d));
+        memset(blue_d, 0, sizeof(blue_d));
+        typedef pair<int, int> pr;  //second:0->red     second:1->blue;
+        unordered_map<int, vector<int> > red, blue;
+        for(auto aa:red_edges)
+            red[ aa[0] ].push_back( aa[1] );
+        for(auto aa:blue_edges)
+            blue[ aa[0] ].push_back( aa[1] );
+        
+        queue<pr> q,nq;
+        q.push( pr(0,1) );
+        q.push( pr(0,0) );
+        while(!q.empty()){
+            level++;
+            while(!q.empty()){
+                pr temp = q.front();  q.pop();
+                if( temp.second == 1 && red.count(temp.first) && red_d[temp.first]==0){    //last arrive color is blue
+                    for(auto aa:red[ temp.first ]){ //evert edge from this node
+                        ans[aa] = min( ans[aa], level );
+                        nq.push( pr(aa,0) );
+                        red_d[temp.first] = 1;
+                    }
+                }
+                if( temp.second == 0 && blue.count(temp.first) && blue_d[temp.first]==0){    //last arrive color is red
+                    for(auto aa:blue[ temp.first ]){ //evert edge from this node
+                        ans[aa] = min( ans[aa], level );
+                        nq.push( pr(aa,1) );
+                        blue_d[temp.first] = 1;
+                    }
+                }
+            }
+            q.swap(nq); 
+        }
+        for(int i=1; i<n; i++)
+            if(ans[i]==999999) ans[i]=-1;
+        ans[0] = 0;
+        return ans;
+    }
+};
