@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int K) {
+        int M = 1e7;
+        vector<vector<int>> dp(n, vector<int>(K+2, M));
+        dp[src][0]=0;
+        //dp[t][K]: min cost to arrive to t within K step
+        for(int k=1; k<=K+1; k++){
+            for(auto& f : flights){
+                dp[f[1]][k]=min(dp[f[1]][k-1], min( dp[f[1]][k], dp[f[0]][k-1]+f[2] ));
+            }
+        }
+        return dp[dst][K+1]==M ?-1: dp[dst][K+1];
+    }
+};
