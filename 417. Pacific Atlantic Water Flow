@@ -1,0 +1,81 @@
+class Solution {
+public:
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& matrix) {
+        row=matrix.size();
+        if(row == 0)
+            return {};
+        col=matrix[0].size();
+        //cout << "row:" <<row<<" col:"<<col<<endl;
+        vector<vector<int> > ret;
+        vector<vector<int> > ans(row, vector<int>(col,0));
+        vector<vector<int> > paci(ans);
+        vector<vector<int> > atla(ans);
+        
+        for(int i=0; i<col; i++){
+            dfs(i,0,matrix,paci);
+        }
+        
+        for(int i=0; i<row; i++)
+            dfs(0,i,matrix,paci);
+
+        /*for(int i=0; i<row; i++){
+            for(int j=0; j<col; j++)
+                cout<<paci[i][j]<<" ";
+            cout<<endl;
+        }*/
+        
+        for(int i=0; i<col; i++)
+            dfs(i,row-1,matrix,atla);
+        for(int i=0; i<row; i++)
+            dfs(col-1,i,matrix,atla);
+        /*
+        for(int i=0; i<row; i++){
+            for(int j=0; j<col; j++)
+                cout<<atla[i][j]<<" ";
+            cout<<endl;
+        }
+        */
+        
+        for(int i=0; i<row; i++)
+            for(int j=0; j<col; j++)
+                if( paci[i][j] && atla[i][j] )
+                    ret.push_back({i,j});
+
+        return ret;
+    }
+    
+    void dfs(int x, int y, vector<vector<int>>& matrix, vector<vector<int> >& d){
+        if( !isin(x,y) ) return;
+        if( d[y][x]>0 )   return;
+        //cout << x << " " << y << endl;
+        d[y][x] = 1;
+        
+        if( isin(x-1, y) && matrix[y][x-1]>=matrix[y][x]){
+            //cout << "← \r";
+            dfs(x-1,y,matrix, d);
+        }
+        if( isin(x, y-1) && matrix[y-1][x]>=matrix[y][x]){
+            //cout << "↑ \r";
+            dfs(x,y-1,matrix, d);
+        }   
+        if( isin(x+1, y) && matrix[y][x+1]>=matrix[y][x]){
+            //cout << "→ \r";
+            dfs(x+1,y,matrix, d);
+        }   
+        if( isin(x, y+1) && matrix[y+1][x]>=matrix[y][x]){
+            //cout << "↓ \r";
+            dfs(x,y+1,matrix, d);
+        }   
+            
+        return;
+    }
+    
+    bool isin(int x, int y){
+        if(x>=0 && x<col && y>=0 && y<row)   return true;
+        return false;
+    }
+    
+private:
+    int row;
+    int col;
+};
