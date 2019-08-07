@@ -1,0 +1,46 @@
+/* dijkstra
+ *
+ */
+class Solution {
+public:
+    int networkDelayTime(vector<vector<int>>& times, int N, int K) {
+        if(N==0)    return -1;
+        if(N==1)    return 0;
+        if(times.size() < N-1) return -1;
+        
+        int d[N+1], nowPos=K, nowDist=999999;        
+        memset(d, 0, sizeof(d));
+        vector<int> dis(N+1,999999);
+        dis[K] = 0;
+        unordered_map<int,vector<int> > ma;
+        for(int i=0; i<times.size(); i++ ){
+            ma[times[i][0]].push_back(i); 
+        }
+        
+        for(int z=1; z<N; z++){
+            nowDist = 999999;
+            nowPos=0;
+            //cout << "d: ";  for(auto aa:d)    cout << aa << ' ';  cout << endl;
+            for(int i=1; i<=N; i++){
+                if( d[i]==0 && dis[i] < nowDist ){
+                    nowPos = i;
+                    nowDist = dis[i];
+                }
+            }//*********min path now
+            d[nowPos] = 1;
+            //cout << "nowPos:" << nowPos << " nowDist:" << nowDist << endl;
+            for(int aa:ma[nowPos]){
+                //cout << "to: " << times[aa][1] << endl;
+                if( d[times[aa][1]] == 0 && ( (times[aa][2]+nowDist)<dis[times[aa][1]] ) )
+                    dis[times[aa][1]] = times[aa][2]+nowDist;
+            }                       
+            //cout << "dis: ";  for(auto aa:dis)    cout << aa << ' ';  cout << endl;
+        }
+        
+        int max = -1;
+        for(int i=1; i<=N; i++)
+                if( dis[i] > max )
+                    max = dis[i];
+        return  (max==999999) ? -1 : max;
+    }
+};
