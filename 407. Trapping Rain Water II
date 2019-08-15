@@ -1,0 +1,93 @@
+struct GridPoint {
+  int height;
+  int r;
+  int c;
+};
+
+bool operator>(const GridPoint& a, const GridPoint& b) {
+  return a.height > b.height;
+}
+
+struct Direction {
+  int r;
+  int c;
+};
+
+constexpr std::array<Direction, 4> DIRECTIONS = {{
+  {+1,  0},
+  {-1,  0},
+  { 0, +1},
+  { 0, -1}
+}};
+
+template<class T>
+using MinQueue = std::priority_queue<T, std::vector<T>, std::greater<T>>;
+
+class Solution {
+public:
+  int trapRainWater(std::vector<std::vector<int>>& heightMap) {
+    // Set dimensions and allow early bail-out
+    const int R = heightMap.size();
+    if (R <= 2) return 0;
+    const int C = heightMap[0].size();
+    if (C <= 2) return 0;
+    
+    // Traversal data-structures
+    MinQueue<GridPoint> gridTraversal;
+    std::stack<GridPoint> lakeTraversal;
+    
+    // Initialize gridTraversal queue and mark cells as visited;
+    // heightMap doubles as a visited-tracker: -1 = visited
+    heightMap[0][0]     = -1;
+    heightMap[0][C-1]   = -1;
+    heightMap[R-1][0]   = -1;
+    heightMap[R-1][C-1] = -1;
+    for (int r = 1; r < R - 1; ++r) {
+      gridTraversal.push({ heightMap[r][0],   r, 0   });
+      gridTraversal.push({ heightMap[r][C-1], r, C-1 });
+      heightMap[r][0]   = -1;
+      heightMap[r][C-1] = -1;
+    }
+    for (int c = 1; c < C - 1; ++c) {
+      gridTraversal.push({ heightMap[0][c],   0,   c });
+      gridTraversal.push({ heightMap[R-1][c], R-1, c });
+      heightMap[0][c]   = -1;
+      heightMap[R-1][c] = -1;
+    }
+    
+    // Visit all cells systematically from low- to high-ground
+    int trappedRainWater = 0;
+    while (!gridTraversal.empty() || !lakeTraversal.empty()) {
+      GridPoint p;
+      if (lakeTraversal.empty()) {
+        p = gridTraversal.top();
+        gridTraversal.pop();
+      } else {
+        p = lakeTraversal.top();
+        lakeTraversal.pop();
+      }
+      for (const auto& d : DIRECTIONS) {
+        const int nr = p.r + d.r;
+        if (nr < 0 || nr >= R) continue;
+        const int nc = p.c + d.c;
+        if (nc < 0 || nc >= C) continue;
+        if (heightMap[nr][nc] == -1) continue;
+        if (heightMap[nr][nc] <= p.height) {
+          trappedRainWater += p.height - heightMap[nr][nc];
+          lakeTraversal.push({ p.height, nr, nc });
+        } else {
+          gridTraversal.push({ heightMap[nr][nc], nr, nc });
+        }
+        heightMap[nr][nc] = -1;
+      }
+    }
+    return trappedRainWater;
+  }
+};
+
+static const auto magic = []() {
+  std::ios::sync_with_stdio(false);
+  std::cin.tie(nullptr);
+  std::cout.tie(nullptr);
+  return nullptr;
+}();
