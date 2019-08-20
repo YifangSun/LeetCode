@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int rob(TreeNode* root) {
+        if(!root) return 0;
+        int od=root->val, ev=0;
+        //cout << root->val << endl;
+        if( root->left ){
+            rob( root->left );
+            //cout << "返回" << endl;
+            ev+=root->left->val;
+            if(root->left->left)
+                od += root->left->left->val;
+            if(root->left->right)
+                od += root->left->right->val;
+            //cout << "od:"<<od << " ev:" << ev << endl;
+        }
+        if( root->right ){
+            rob( root->right );
+            //cout << "返回" << endl;
+            ev+=root->right->val;
+            if(root->right->left)
+                od += root->right->left->val;
+            if(root->right->right)
+                od += root->right->right->val;
+            //cout << "od:"<<od << " ev:" << ev << endl;
+        }
+        root->val = max(od, ev);
+        return root->val;
+    }
+};
