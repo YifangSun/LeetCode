@@ -16,7 +16,7 @@ public:
             degree[edge[1]] ++;
         }
         
-        queue<int> myq, nextq;
+        queue<int> myq;
         for(int i = 0; i < n; ++ i){
             if(degree[i] == 1){
                 myq.push(i);
