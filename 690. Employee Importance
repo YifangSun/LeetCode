@@ -1,0 +1,23 @@
+#define f first
+#define s second
+class Solution {
+public:
+    int getImportance(vector<Employee*> e, int id) {
+        int ans = 0;
+        if(e.size() == 0)   return 0;
+        typedef pair<int, vector<int> > pr;
+        unordered_map<int, pr> m;
+        for(auto aa:e)
+            m[ aa->id ] = make_pair( aa->importance, aa->subordinates );
+        queue<int> q;
+        q.push(id);
+        while( !q.empty() ){
+            int t = q.front();  q.pop();
+            pr tpr = m[t];
+            ans += tpr.f;
+            for(auto aa:tpr.s)
+                q.push(aa);
+        }
+        return ans;
+    }
+};
