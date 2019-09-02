@@ -1,0 +1,62 @@
+class Solution {
+public:
+    int numBusesToDestination(vector<vector<int>>& routes, int S, int T) {
+        if(S==T)    return 0;
+        int fw=0, bk=0;
+        unordered_map<int, vector<int> > m;
+        set<int> asd;
+        set<int> moreThan2;
+        for(auto aa:routes)
+            for(auto i:aa){
+                if(asd.count(i))    moreThan2.insert(i);
+                else    asd.insert(i);
+            }
+        moreThan2.insert(S);    moreThan2.insert(T);
+
+        for(auto aa:routes){
+            set<int> thisRoutes;
+            for(auto i:aa){
+                if(moreThan2.count(i))  thisRoutes.insert(i);
+            }
+            for(auto i:thisRoutes)
+                for(auto j:thisRoutes)
+                    if(i!=j)
+                        m[i].push_back(j);
+        }
+        
+        set<int> ps, qs;
+        ps.insert(T);
+        queue<int> q, p;
+        q.push(S);
+        p.push(T);
+        while( !q.empty() || !p.empty() ){
+            int qnum = q.size(), pnum = p.size();
+            qs.clear();
+            fw++;
+            while(qnum--){
+                int t = q.front(); q.pop();
+                for(auto aa:m[t]){
+                    if(ps.count(aa))
+                        return fw+bk;
+                    q.push(aa);
+                    qs.insert(aa);
+                }
+                m.erase(t);
+            }
+            
+            ps.clear();
+            bk++;
+            while(pnum--){
+                int t = p.front(); p.pop();
+                for(auto aa:m[t]){
+                    if(qs.count(aa))
+                        return fw+bk;
+                    p.push(aa);
+                    ps.insert(aa);
+                }
+                m.erase(t);
+            }
+        }
+        return -1;
+    }
+};
