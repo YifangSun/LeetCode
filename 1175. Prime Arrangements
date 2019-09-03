@@ -1,0 +1,30 @@
+#define INF 1000000007
+class Solution {
+public:
+    int numPrimeArrangements(int n) {
+        if(!n)  return 0;
+        int primeNum =  PrimeNumber(n);
+        long long int ans = ( (A(primeNum)%INF) * (A(n-primeNum)%INF) )%INF;
+        return static_cast<int>(ans);
+    }
+    long long int A(int n){
+        long long int ans = 1;
+        while(n){
+            ans = ( (ans%INF) * n ) % INF;
+            n--;
+        }
+        return ans;
+    }
+    int PrimeNumber(int n){
+        vector<int> d(n+1,1);
+        d[0] = 0;
+        d[1] = 0;
+        for(int i=2; i<=n; i++){
+            int maxMul = n/i;
+            for(int j=2; j<=maxMul; j++){
+                d[i*j] = 0;
+            }
+        }
+        return accumulate(d.begin(), d.end(), 0);
+    }
+};
