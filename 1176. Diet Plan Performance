@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int dietPlanPerformance(vector<int>& calories, int k, int lower, int upper) {
+        int len = calories.size();
+        if(len == 0)    return 0;
+        int sum=0, point=0;
+        sum = accumulate(calories.begin(), calories.begin()+k, 0);
+        if(sum>upper)   point++;
+        else if(sum<lower)  point--;
+        for(int i=0; i<len-k ; i++){
+            sum -= calories[i];
+            sum += calories[i+k];
+            if(sum>upper)   point++;
+            else if(sum<lower)  point--;
+        }
+        return point;
+    }
+};
