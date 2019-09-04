@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int sumNumbers(TreeNode* root) {
+        if(root==NULL)  return 0;
+        vector<int> total;
+        recursion(root, 0, total);
+        return accumulate(total.begin(), total.end(), 0);
+    }
+    void recursion(TreeNode* r, int nowNum, vector<int>& total){
+        nowNum = nowNum*10 + r->val;
+        if(r->left==NULL && r->right==NULL){
+            total.push_back(nowNum);
+            return;
+        }
+        if(r->left)
+            recursion(r->left, nowNum, total);
+        if(r->right)
+            recursion(r->right, nowNum, total);
+        return;
+    }
+};
