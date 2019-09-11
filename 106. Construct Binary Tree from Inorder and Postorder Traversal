@@ -1,0 +1,18 @@
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& i, vector<int>& p) {
+        for(int k=0; k<i.size(); k++)  //put inorder into a map, convenient for us to search
+            ma[i[k]]=k;
+        return helper(i, 0, i.size(), p, 0, p.size());
+    }  
+    TreeNode* helper(vector<int>& i, int l1, int r1, vector<int>& p, int l2, int r2) {
+        if(l1==r1 || l2==r2)    return NULL;
+        int j = ma[p[r2-1]];
+        TreeNode* root = new TreeNode(p[r2-1]);
+        root->left = helper(i, l1, j, p, l2, l2+j-l1);
+        root->right = helper(i, j+1, r1, p, l2+j-l1, r2-1);
+        return root;  
+    }
+private:
+    unordered_map<int,int> ma;
+};
