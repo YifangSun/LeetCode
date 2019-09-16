@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<vector<char>> updateBoard(vector<vector<char>>& board, vector<int>& click) {
+        if(board.size()==0 || board[0].size()==0)   return board;
+        if(board[click[0]][click[1]] == 'M')  board[click[0]][click[1]]='X';
+        else if(board[click[0]][click[1]] == 'E'){
+            if( adjacentMine(click[0], click[1], board)==0 ){
+                board[click[0]][click[1]]='B';
+                int x=board[0].size();
+                int y=board.size();
+                int dx[]={-1, 0, 1, -1, 1, -1, 0, 1};
+                int dy[]={-1, -1, -1, 0, 0, 1, 1, 1};
+                for(int i=0; i<8; i++){
+                    if((click[1]+dx[i])<0 || (click[1]+dx[i])>=x || (click[0]+dy[i])<0 || (click[0]+dy[i])>=y)                                  continue;
+                    vector<int> temp={click[0]+dy[i], click[1]+dx[i]};
+                    updateBoard(board, temp);
+                }
+            }
+            else
+                board[click[0]][click[1]]='0'+adjacentMine(click[0], click[1], board);
+        }
+        
+        return board;
+    }
+    int adjacentMine(int a, int b, vector<vector<char>>& board){
+        int ans=0;
+        int x=board[0].size();
+        int y=board.size();
+        int dx[]={-1, 0, 1, -1, 1, -1, 0, 1};
+        int dy[]={-1, -1, -1, 0, 0, 1, 1, 1};
+        for(int i=0; i<8; i++){
+            if((b+dx[i])<0 || (b+dx[i])>=x || (a+dy[i])<0 || (a+dy[i])>=y)   continue;
+            //cout << "x:" << b+dx[i] << " y:" << a+dy[i] << endl;
+            if(board[ a+dy[i] ][ b+dx[i] ] == 'M')    ans++;
+        }
+        return ans;
+    }
+};
