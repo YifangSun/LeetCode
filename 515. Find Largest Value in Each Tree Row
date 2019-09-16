@@ -1,0 +1,21 @@
+#define NEG_INF -2147483648
+class Solution {
+public:
+    vector<int> largestValues(TreeNode* root) {
+        vector<int> ans;
+        if(root == NULL)   return ans;
+        queue<TreeNode*> q;
+        q.push(root);
+        while(!q.empty()){
+            int amax=NEG_INF, num=q.size();
+            while(num--){
+                TreeNode* t=q.front();  q.pop();
+                amax = max(amax, t->val);
+                if(t->left) q.push(t->left);
+                if(t->right) q.push(t->right);
+            }
+            ans.push_back(amax);
+        }
+        return ans;
+    }
+};
