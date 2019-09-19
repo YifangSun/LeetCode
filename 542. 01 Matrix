@@ -1,0 +1,45 @@
+typedef pair<int, int> pr;
+class Solution {
+public:
+    vector<vector<int>> updateMatrix(vector<vector<int>>& matrix) {
+        vector<vector<int>> ans=matrix;
+        row=matrix.size();
+        if(row==0)  return ans;
+        col=matrix[0].size();
+        if(col==0)  return ans;
+        int lvl=0;
+        set<pr> se;
+        queue<pr> q;
+        for(int i=0; i<row; i++)
+            for(int j=0; j<col; j++)
+                if(matrix[i][j]==0){
+                    se.insert(pr(i,j));
+                    if( isLegal(se, i-1, j) && matrix[i-1][j]==1 ){  q.push(pr(i-1, j)); se.insert(pr(i-1, j));  }
+                    if( isLegal(se, i+1, j) && matrix[i+1][j]==1 ){  q.push(pr(i+1, j)); se.insert(pr(i+1, j));  }
+                    if( isLegal(se, i, j-1) && matrix[i][j-1]==1 ){  q.push(pr(i, j-1)); se.insert(pr(i, j-1));  }
+                    if( isLegal(se, i, j+1) && matrix[i][j+1]==1 ){  q.push(pr(i, j+1)); se.insert(pr(i, j+1));  }
+                }
+            
+        while(!q.empty()){
+            lvl++;
+            int num=q.size();
+            while(num--){
+                pr t=q.front(); q.pop();
+                int i=t.first, j=t.second;
+                ans[i][j] = lvl;
+                if( isLegal(se, i-1, j) ){  q.push(pr(i-1, j)); se.insert(pr(i-1, j));  }
+                if( isLegal(se, i+1, j) ){  q.push(pr(i+1, j)); se.insert(pr(i+1, j));  }
+                if( isLegal(se, i, j-1) ){  q.push(pr(i, j-1)); se.insert(pr(i, j-1));  }
+                if( isLegal(se, i, j+1) ){  q.push(pr(i, j+1)); se.insert(pr(i, j+1));  }
+            }
+        }
+        return ans;
+    }
+    bool isLegal(set<pr>& se, int r, int c){
+        if(r<0 || r>=row || c<0 || c>=col)  return false;
+        else if( se.count(pr(r,c)) )        return false;
+        return true;
+    } 
+private:
+    int row, col;
+};
