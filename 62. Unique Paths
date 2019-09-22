@@ -1,0 +1,14 @@
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        if(m==0 || n==0)    return 0;
+        int d[n][m];
+        memset(d, 0, sizeof(d));
+        for(int i=0; i<m; i++)  d[n-1][i]=1;
+        for(int i=0; i<n; i++)  d[i][m-1]=1;
+        for(int i=m-2; i>=0; i--)
+            for(int j=n-2; j>=0; j--)
+                d[j][i]=d[j+1][i]+d[j][i+1];
+        return d[0][0];
+    }
+};
