@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int minPathSum(vector<vector<int>>& grid) {
+        int row=grid.size();
+        if(row==0) return 0;
+        int col=grid[0].size();
+        if(col==0) return 0;
+        int d[row][col];
+        memset(d, -1, sizeof(d));
+        d[row-1][col-1]=grid[row-1][col-1];
+        
+        for(int i=row-2; i>=0; i--)
+            d[i][col-1] = d[i+1][col-1] + grid[i][col-1]; 
+        for(int i=col-2; i>=0; i--)
+            d[row-1][i] = d[row-1][i+1] + grid[row-1][i];
+        for(int i=col-2; i>=0; i--)
+            for(int j=row-2; j>=0; j--)
+                d[j][i] = min(d[j+1][i] , d[j][i+1]) + grid[j][i];
+                
+        //for(int i=0; i<row; i++){  for(int j=0; j<col; j++) cout << d[i][j] << " "; cout << endl;   }
+        return d[0][0];
+    }
+};
