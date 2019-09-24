@@ -1,0 +1,32 @@
+typedef long long int ll;
+class Solution {
+public:
+    int nthUglyNumber(int n, int a, int b, int c) {
+        ll nn=n, aa=a, bb=b, cc=c;
+        ll gcd_ab=gcd(aa, bb);
+        ll gcd_bc=gcd(bb, cc);
+        ll gcd_ac=gcd(aa, cc);
+        ll gcd_abc=gcd(gcd_ab, cc);
+        ll lcm_ab= max(aa, bb)/gcd_ab * min(aa, bb);
+        ll lcm_bc= max(cc, bb)/gcd_bc * min(cc, bb);
+        ll lcm_ac= max(aa, cc)/gcd_ac * min(aa, cc);
+        ll lcm_abc = lcm_ab / gcd(lcm_ab, cc) * cc;
+        cout << lcm_ab << " " << lcm_bc << " " << lcm_ac << " " << lcm_abc << " " << endl;
+        ll l=0, r=n * min(min(aa,bb),cc)+1, m;
+        while(r-l > 1){
+            m=(r+l)/2;
+            ll uglyNum=uglyNumber(m, a, b, c, lcm_ab, lcm_bc, lcm_ac, lcm_abc);
+            cout << l << " " << m << " " << r << " | " << uglyNum << endl;
+            if(uglyNum >= n)  r=m;
+            else if(uglyNum < n)  l=m;
+        }
+        return (int)r;
+    }
+    inline ll uglyNumber(ll n, ll a, ll b, ll c, ll lcm1, ll lcm2, ll lcm3, ll lcm123){
+        return n/a + n/b + n/c - n/lcm1 - n/lcm2 - n/lcm3 + n/lcm123;
+    }
+    ll gcd(ll a,ll b)
+    {
+        return b==0?a:gcd(b,a%b);
+    }
+};
