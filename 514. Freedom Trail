@@ -1,0 +1,32 @@
+#define MAX_INF 2147483647
+class Solution {
+public:
+    int findRotateSteps(string ring, string key) {
+        len=ring.size();
+        if(len==0 || key.size()==0) return 0;
+        for(int i=0; i<len; i++)
+            ma[ring[i]].push_back(i); 
+        vector< vector<int> > d(key.size(), vector<int>(len));
+        for(auto aa:ma[key[0]])
+            d[0][aa]=minDist(0, aa)+1;
+        for(int i=1; i<key.size(); i++)
+            for(auto aa:ma[key[i]]){
+                int minStep=MAX_INF;
+                for(auto bb:ma[key[i-1]]){
+                    minStep=min(minStep, d[i-1][bb]+minDist(aa,bb)+1);
+                }
+                d[i][aa]=minStep;
+            }
+        for(int i=0; i<len; i++)
+            if(d[key.size()-1][i]>0)
+                ans = min(ans, d[key.size()-1][i]);
+        return ans;
+    }
+    inline int minDist(int i, int j){
+        return min( abs(i-j) , abs(len-abs(i-j)) );
+    }
+private:
+    unordered_map<char, vector<int> > ma;
+    int len=0;
+    int ans=2147483647;
+};
