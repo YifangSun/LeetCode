@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int equalSubstring(string s, string t, int maxCost) {
+        vector<int> cost;
+        int len=s.size();
+        int maxLen=0;
+        for(int i=0; i<len; i++)
+            cost.push_back( abs(t[i]-s[i]) );
+        //for(auto aa:cost)   cout << aa << " ";  cout << endl;
+        for(int i=0; i<len-maxLen; i++){
+            for(int j=i+maxLen; j<=len; j++){
+                int sum=accumulate(cost.begin()+i, cost.begin()+j, 0);
+                if(sum<=maxCost)    maxLen=max(maxLen, j-i);
+                else break;
+            }
+        }
+        return maxLen;
+    }
+};
