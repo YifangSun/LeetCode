@@ -1,0 +1,35 @@
+class Solution {
+public:
+    string removeDuplicates(string s, int k) {
+        int len=s.size();      
+        while(1){
+            int entrySize=s.size();
+            for(int i=0; s.size()>k && i<=s.size()-k; i++){
+                int t=k;
+                bool flag=false;
+                while(--t){
+                    if(s[i]==s[i+t])    flag=true;
+                    else{
+                        flag=false;
+                        break;
+                    }
+                }
+                if(flag){
+                    t=k;
+                    s[i]='#';
+                    while(--t){
+                        s[i+t]='#';    
+                    }
+                }
+            }
+            string ns;
+            for(int i=0; i<s.size(); i++)
+                if(s[i]!='#')   ns+=s[i];
+            s.swap(ns);
+            int exitSize=s.size();
+            if(entrySize==exitSize) break;
+        }
+        string ans;
+        return s;
+    }
+};
