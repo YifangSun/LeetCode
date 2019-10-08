@@ -1,0 +1,33 @@
+class H2O {
+private:
+    atomic<int> n1,n2;
+
+public:
+    H2O():n1(0),n2(0){}
+
+    void hydrogen(function<void()> releaseHydrogen) {
+        while(n2==2)
+            this_thread::yield();
+        // releaseHydrogen() outputs "H". Do not change or remove this line.
+        releaseHydrogen();
+        n2++;
+        if( (n1+n2)>=3 ){
+            n1=0;
+            n2=0;
+        }
+    }
+
+    void oxygen(function<void()> releaseOxygen) {
+        
+        while(n1==1)
+            this_thread::yield();
+
+        // releaseOxygen() outputs "O". Do not change or remove this line.
+        releaseOxygen();
+        n1++;
+        if( (n1+n2)>=3 ){
+            n1=0;
+            n2=0;
+        }
+    }
+};
