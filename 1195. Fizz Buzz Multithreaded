@@ -1,0 +1,102 @@
+class FizzBuzz {
+private:
+    int n;
+    atomic<int> m;
+    atomic<bool> f,b,fb,none;
+
+public:
+    FizzBuzz(int n) {
+        this->n = n;
+        m=0;
+        f=false;
+        b=false;
+        fb=false;
+        none=true;
+    }
+
+    // printFizz() outputs "fizz".
+    void fizz(function<void()> printFizz) {
+        while(1){
+            while(!f)
+                this_thread::yield();
+            if(m>n) break;
+            printFizz();
+            f=false;
+            b=false;
+            fb=false;
+            none=true;
+        }
+        return;
+    }
+
+    // printBuzz() outputs "buzz".
+    void buzz(function<void()> printBuzz) {
+        while(1){
+            while(!b)
+                this_thread::yield();
+            if(m>n) break;
+            printBuzz();
+            f=false;
+            b=false;
+            fb=false;
+            none=true;
+        }
+        return;
+    }
+
+    // printFizzBuzz() outputs "fizzbuzz".
+	void fizzbuzz(function<void()> printFizzBuzz) {
+        while(1){
+            while(!fb)
+                this_thread::yield();
+            if(m>n) break;
+            printFizzBuzz();
+            f=false;
+            b=false;
+            fb=false;
+            none=true;
+        }
+        return;
+    }
+
+    // printNumber(x) outputs "x", where x is an integer.
+    void number(function<void(int)> printNumber) {
+        while(1){
+            while(!none)
+                this_thread::yield();
+            m++;
+            if(m>n){ 
+                f=true;
+                b=true;
+                fb=true;
+                none=false;
+                break;
+            }
+            if(m%3 == 0){
+                if(m%5 == 0){
+                    f=false;
+                    b=false;
+                    fb=true;
+                    none=false; 
+                }else{
+                    f=true;
+                    b=false;
+                    fb=false;
+                    none=false; 
+                }
+            }else if(m%5 == 0){
+                f=false;
+                b=true;
+                fb=false;
+                none=false; 
+            }else{
+                f=false;
+                b=false;
+                fb=false;
+                none=true;
+                printNumber(m);
+            }
+        }
+        return;
+    }
+};
