@@ -1,0 +1,44 @@
+class Foo {
+
+private:
+      atomic<bool> f,s,t;  
+public:
+    Foo() {
+        f=true;
+        s=false;
+        t=false;
+    }
+
+    void first(function<void()> printFirst) {
+        while(!f)
+            this_thread::yield();
+        // printFirst() outputs "first". Do not change or remove this line.
+        printFirst();
+        f=false;
+        s=true;
+        t=false;
+        return;
+    }
+
+    void second(function<void()> printSecond) {
+        while(!s)
+            this_thread::yield();
+        // printSecond() outputs "second". Do not change or remove this line.
+        printSecond();
+        f=false;
+        s=false;
+        t=true;
+        return;
+    }
+
+    void third(function<void()> printThird) {
+        while(!t)
+            this_thread::yield();
+        // printThird() outputs "third". Do not change or remove this line.
+        printThird();
+        f=false;
+        s=false;
+        t=false;
+        return;
+    }
+};
