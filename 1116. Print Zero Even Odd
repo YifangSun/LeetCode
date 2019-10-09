@@ -1,0 +1,56 @@
+class ZeroEvenOdd {
+private:
+    int n;
+    atomic<int> m;
+    mutex mtx0,mtx1,mtx2;
+
+public:
+    ZeroEvenOdd(int n) {
+        this->n = n;
+        this->m = 0;
+        mtx1.lock();
+        mtx2.lock();
+    }
+
+    // printNumber(x) outputs "x", where x is an integer.
+    void zero(function<void(int)> printNumber) {
+        while(1){
+            mtx0.lock();
+            m++;
+            if(m>n){
+                mtx1.unlock();
+                mtx2.unlock();
+                break;
+            }
+            printNumber(0);
+            if(m%2 == 1){  
+                mtx1.unlock();
+            }else{
+                mtx2.unlock();
+            }
+        }
+        return;
+    }
+
+    void even(function<void(int)> printNumber) {
+        while(1){
+            mtx2.lock();
+            if(m>n)
+                break;
+            printNumber(m);
+            mtx0.unlock();
+        }
+        return;
+    }
+
+    void odd(function<void(int)> printNumber) {
+        while(1){
+            mtx1.lock();
+            if(m>n)
+                break;
+            printNumber(m);
+            mtx0.unlock();
+        }
+        return;
+    }
+};
