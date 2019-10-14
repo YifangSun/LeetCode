@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int maxEqualFreq(vector<int>& nums) {
+        unordered_map<int, int> ma;
+        unordered_map<int, int> orrenceTimes_howMany; //这个出现次数 的数字 有几个
+        int maxNum=3;
+        if(nums.size() < 4)
+            return nums.size();
+        for(int i=0; i<3; i++){
+            ma[nums[i]]++;
+        }
+        for(auto aa:ma)
+            orrenceTimes_howMany[aa.second]++;
+        
+        for(int i=3; i<nums.size(); i++){
+            if(ma[nums[i]]!=0){
+                if(orrenceTimes_howMany[ ma[nums[i]] ] == 1)
+                    orrenceTimes_howMany.erase(ma[nums[i]]);
+                else{
+                    orrenceTimes_howMany[ ma[nums[i]] ]--;
+                }
+            }
+            ma[nums[i]]++;
+            orrenceTimes_howMany[ ma[nums[i]] ]++;
+
+            if(orrenceTimes_howMany.count(1) && orrenceTimes_howMany.size()==1)
+                maxNum = max(maxNum, i+1);
+            else if(orrenceTimes_howMany.size()==1 && orrenceTimes_howMany.begin()->second==1)
+                maxNum = max(maxNum, i+1);
+            else if(orrenceTimes_howMany.count(1) && orrenceTimes_howMany.size()==2 && orrenceTimes_howMany[1]==1){
+                maxNum = max(maxNum, i+1);
+            }
+            else if(orrenceTimes_howMany.size()==2){
+                int d[2],k=0;
+                for(auto asd:orrenceTimes_howMany)
+                    d[k++]=asd.first;
+                if(abs(d[0]-d[1]) == 1 && orrenceTimes_howMany[max(d[0],d[1])]==1 )
+                    maxNum = max(maxNum, i+1);
+            }
+        }
+        return maxNum;
+    }
+};
