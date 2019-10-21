@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<string> removeSubfolders(vector<string>& folder) {
+        unordered_set<string> se;
+        vector<string> ans;
+        for(int i=0; i<folder.size(); i++){
+            se.insert(folder[i]);
+        }
+        
+        for(int i=0; i<folder.size(); i++){
+            int flag=1;
+            
+            for(int j=0; j<folder[i].size(); j++){
+                if(folder[i][j] != '/')
+                    continue;
+                if( se.count( folder[i].substr(0,j) ) ){
+                    flag=0;
+                    break;
+                }
+            }
+            if(flag)
+                ans.push_back(folder[i]);
+        }
+        return ans;
+    }
+};
