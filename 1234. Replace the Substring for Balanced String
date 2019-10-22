@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int balancedString(string s) {
+        string P="QWER";
+        int n=s.size();
+        vector<int> count[4];
+        for(int i=0; i<4; i++){
+            count[i].assign(n+1, 0);
+            for(int j=0; j<n; j++){
+                if(s[j]==P[i])
+                    count[i][j+1] = count[i][j]+1;
+                else
+                    count[i][j+1] = count[i][j];
+            }
+        }
+        int mi=0, ma=n;
+        int ndiv4=n/4;
+        while(mi<ma){
+            int mid=(mi+ma)/2;
+            bool OK=false;
+            for(int i=0; i+mid<=n; i++){
+                bool thisOK=true;
+                for(int j=0; j<4; j++){
+                    if(count[j][n]-count[j][i+mid]+count[j][i] > ndiv4){
+                        thisOK=false;
+                        break;
+                    }
+                }
+                if(thisOK){
+                    OK=true;
+                    break;
+                }
+            }
+            if(OK){
+                ma=mid;
+            }else{
+                mi=mid+1;
+            }
+        }
+        return mi;
+    }
+};
