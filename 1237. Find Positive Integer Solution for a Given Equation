@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<vector<int>> findSolution(CustomFunction& c, int z) {
+        vector<vector<int>> ans;
+        typedef pair<int, int> pr;
+        queue<pr> q;
+        q.push(pr(1,1));
+        int i=0;
+        while(!q.empty()){
+            
+            int n=q.size();
+            cout << " " << endl;
+            while(n--){
+                pr t=q.front();  q.pop();
+                int fxy=c.f(t.first, t.second);
+                //cout << t.first << " " << t.second << " " << fxy;
+                if(fxy == z){
+                    if(t.first>0 && t.second>0){
+                        ans.push_back({t.first, t.second});
+                    }
+                }else if(fxy < z){
+                    q.push( pr(t.first+1, t.second) );
+                    if(n==0)
+                        q.push( pr(t.first, t.second+1) );
+                    //cout << " -> push " << t.first+1 << " " << t.second;
+                }
+                //cout << endl;
+            }
+            
+        }
+        return ans;
+    }
+};
