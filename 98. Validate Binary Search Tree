@@ -1,0 +1,22 @@
+#define MAX_INF 21474836470
+#define MIN_INF -21474836480
+#define ll long long int
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {
+        return helper(root, MIN_INF, MAX_INF);
+    }
+    bool helper(TreeNode* root, ll biggerThan, ll lessThan){
+        if(root==NULL)
+            return true;
+        ll now = (ll)root->val;
+        if(now <= biggerThan || now >= lessThan)
+            return false;
+        if(root->left!=NULL && !helper(root->left, biggerThan, now) )
+            return false;
+        if(root->right!=NULL && !helper(root->right, now, lessThan) )
+            return false;
+        return true;
+        
+    }
+};
