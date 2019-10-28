@@ -1,0 +1,30 @@
+class Solution {
+public:
+    vector<int> circularPermutation(int n, int start) {
+        vector<int> ans=helper(n);
+        vector<int> ret;
+        int s=ans.size();
+        int i=0;
+        for(; i<s; i++)
+            if(ans.at(i)==start)
+                break;
+        
+        for(int j=i; j<s; j++)
+            ret.push_back(ans[j]);
+        for(int j=0; j<i; j++)
+            ret.push_back(ans[j]);
+        return ret;
+            
+    }
+    
+    vector<int> helper(int len){
+        if(len==0)  return {0};
+        if(len==1)  return {0, 1};
+        vector<int> ans=helper(len-1);
+        int s=ans.size();
+        for(int i=s-1; i>=0; i--){
+            ans.push_back( ans.at(i) | 1<<(len-1) );
+        }
+        return ans;
+    }
+};
