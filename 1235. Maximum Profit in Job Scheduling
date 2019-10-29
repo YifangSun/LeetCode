@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int jobScheduling(vector<int>& startTime, vector<int>& endTime, vector<int>& profit) {
+        using pr=pair<int, int>;
+        int maxTime=*max_element(endTime.begin(), endTime.end());
+        vector<int> d(maxTime+2, 0);
+        map<int, vector<pr> > ma;
+        for(int i=0; i<startTime.size(); i++)
+            ma[ startTime[i] ].push_back( pr(endTime[i], profit[i]) );
+        int i=maxTime+1;
+        while(--i){
+            if( ma.count(i)==0 ){
+                d[i] = d[i+1];
+            }else{
+                int max_ = 0;
+                for(auto aa:ma[i]){
+                    max_ = max( max_, aa.second + d[ aa.first ]);
+                }
+                d[i] = max( d[i+1], max_ );
+            }
+        }
+        //for(auto aa:d)  cout << aa << " ";  cout << endl; 
+        return d[1];
+    }
