@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int maxLength(vector<string>& arr) {
+        vector<bool> d(26,0);
+        int ans=0;
+        helper(arr, 0, d, 0, ans);
+        return ans;
+    }
+    void helper(vector<string>& arr, int now, vector<bool> d, int length, int& ans){
+        if(now == arr.size()){
+            ans = max(ans, length);
+            return;
+        }
+        helper(arr, now+1, d, length, ans);
+        for(int i=0; i<arr[now].size(); i++){
+            if( d[arr[now][i]-'a'] ){
+                return;
+            }else{
+                d[arr[now][i]-'a'] = true;
+            }
+        }
+        helper(arr, now+1, d, length+arr[now].size(), ans);
+        return; 
+    }
+};
