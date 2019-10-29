@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int findKthNumber(int m,int n, int k){
+        if(m>n)
+            std::swap(m,n);
+        int l = 1, r = n * m;
+        while(l<r){
+            int mid=(l+r)/2;
+            if(helper(mid, m, n, k))
+                r = mid;
+            else
+                l = mid+1;
+        }
+        return l;
+    }
+    
+    int helper(int num, int m, int n, int& k){
+        int count = 0;
+        for(int i=1; i<=m; i++){
+            count += min(num/i, n);
+        }
+        //cout << num << " " << count << endl;
+        return count >= k;
+    }
+};
