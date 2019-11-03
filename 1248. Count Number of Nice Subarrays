@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int numberOfSubarrays(vector<int>& nums, int k) {
+        int s=nums.size();
+        vector<int> d;
+        int odd=0, ans=0;
+        for(int i=0; i<s; i++)
+            if(nums[i]%2 != 0)
+                d.push_back(i);
+        if(d.size() < k)
+            return 0;
+        /*
+        for(int i=0; i<d.size(); i++)
+            cout << d[i] << " ";
+        cout <<endl;
+        */
+        
+        for(int i=0; i<=d.size()-k; i++){
+            int l=0, r=0;
+            if(i==0)
+                l = d[i]+1;
+            else
+                l = d[i] - d[i-1];
+            
+            if(i+k == d.size())
+                r = s - d[i+k-1];
+            else
+                r = d[i+k] - d[i+k-1];
+            
+            //cout << l <<' ' << r << endl;
+            ans += l*r;
+        }
+            
+        return ans;
+    }
+};
