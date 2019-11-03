@@ -1,0 +1,41 @@
+class Leaderboard {
+public:
+    Leaderboard() {
+        list.assign(10005,0);
+    }
+    
+    void addScore(int playerId, int score) {
+        if(list[playerId]!=0) //在里面
+            ma[list[playerId]].erase(playerId);
+        
+        list[playerId] += score;
+        ma[ list[playerId] ].insert(playerId);
+        return;
+    }
+    
+    int top(int K) {
+        int ans=0;
+        int qian=0;
+        map<int, set<int> >::iterator it=ma.begin();
+        for(; it!=ma.end(); it++){
+            //cout << "chengji "<<it->first << endl;
+            for(set<int>::iterator it_set=it->second.begin(); it_set!=it->second.end(); it_set++){
+                ans += it->first;
+                //cout << "ans "<< ans << " id:" <<*it_set <<endl;
+                qian++;
+                if(qian>=K)
+                    return ans;
+            }   
+        }
+        return ans;
+    }
+    
+    void reset(int playerId) {
+        
+        ma[ list[playerId] ].erase(playerId);
+        list[ playerId ] = 0;
+    }
+private:
+    vector<int> list;
+    map<int, set<int>, greater<int> > ma;
+};
