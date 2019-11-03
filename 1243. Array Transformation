@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<int> transformArray(vector<int>& arr) {
+        if(arr.size() <= 2) return arr;
+        int len=arr.size();
+        while(1){
+            bool f=true;
+            vector<int> t(arr);
+            for(int i=1; i<len-1; i++){
+
+                //for(int j=0; j<arr.size(); j++){cout<<t[j]<<" ";}cout << endl;
+
+                if(arr[i]<arr[i-1] && arr[i]<arr[i+1]){
+                    t[i]++;
+                    f=false;
+                }else if(arr[i]>arr[i-1] && arr[i]>arr[i+1]){
+                    t[i]--;
+                    f=false;
+                }
+
+            }
+            if(f)
+                break;
+            else
+                arr.swap(t);
+        }
+        return arr;
+    }
+};
