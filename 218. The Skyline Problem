@@ -1,0 +1,27 @@
+class Solution {
+public:
+    vector<vector<int>> getSkyline(vector<vector<int>>& b) {
+        vector<vector<int>> ans;
+        multiset<int,greater<int>> mse;
+        map<int,vector<int>> ma;
+        int pre=0, cur=0;
+        for(vector<int>& aa:b){
+            ma[aa[0]].push_back(-aa[2]);
+            ma[aa[1]].push_back(aa[2]);
+        }
+        for(pair<const int,vector<int>>& thisAxis:ma){
+            for(int& wall:thisAxis.second){
+                if(wall<0){
+                    mse.insert(-wall);
+                }else{
+                    mse.erase(mse.find(wall));
+                }
+                cur = *mse.begin();
+            }
+            if(cur!=pre)
+                ans.push_back({thisAxis.first,cur});
+            pre=cur;
+        }
+        return ans;
+    }
+};
