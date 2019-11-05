@@ -1,0 +1,46 @@
+class Solution {
+public:
+    vector<int> smallestRange(vector<vector<int>>& nums) {
+        vector<int> ans;
+        int maxElement;
+        int s=nums.size();
+        set<int> se[s];
+        set<int> main;
+        for(int i=0; i<s; i++){
+            for(auto& aa:nums[i]){
+                se[i].insert(aa);
+                main.insert(aa);
+            } 
+        }
+        maxElement = *main.rbegin();
+        int l=0, r=maxElement;
+
+        while(l<r){
+            int mid = ( l + r ) / 2;
+            bool thisRangeOK = false;
+            
+            for(auto& it:main){
+                /*if( it+mid-1 > maxElement )
+                    break;*/
+                bool f=true;
+                for(int i=0; i<s; i++){
+                    if( se[i].lower_bound( it ) == se[i].upper_bound( it+mid ) ){
+                        f = false;
+                        break;
+                    }
+                }
+                if(f){
+                    thisRangeOK = true;
+                    ans = {it , it+mid };
+                    break;
+                }
+            }
+            //cout << l << ' ' << r  << ' ' << mid << " " << thisRangeOK << endl;
+            if(thisRangeOK)
+                r = mid;
+            else
+                l = mid+1;
+        }     
+        return ans;
+    }
+};
