@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int maxScoreWords(vector<string>& words, vector<char>& letters, vector<int>& score) {
+        int s=words.size();
+        int ans=0;
+        vector<int> letters_count_backup(26,0);
+        for(auto& aa:letters){
+            letters_count_backup[aa-'a']++;
+        }
+        for(int mask=0; mask< (1 << s); mask++){
+            vector<int> letters_count(letters_count_backup);
+            int sum=0;
+            for(int i=0; i<s; i++)
+                if( (mask>>i) & 1 ){
+                    for(auto& aa:words[i]){
+                        letters_count[aa-'a']--;
+                        sum += score[aa-'a'];
+                    }
+                }
+            if(*min_element(letters_count.begin(), letters_count.end()) >= 0)
+                ans = max(ans, sum);
+        }
+        return ans;
+    }
+};
