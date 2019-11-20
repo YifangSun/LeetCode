@@ -1,0 +1,93 @@
+class node {
+public:
+    node(int n){
+      val = n;
+      for(int i=0; i<4; i++)
+        next[i] = NULL;
+    };
+    int val;
+    node* next[4];
+};
+
+class Skiplist {
+public:
+    Skiplist() {
+        head_ = new node(99999999);
+    }
+    
+    bool search(int target) {
+        vector<node*> prev(4);
+        node* x = findGreaterOrEqual(target, prev);
+        if(x != NULL && x->val == target) {
+          return true;
+        } else {
+          return false;
+        }
+    }
+    
+    void add(int num) {
+        srand( (unsigned int)(time(NULL)) );
+        int random = rand() % 16 + 1, level = 0;
+        while(random % 2 == 0 && level < 3){
+          level++;
+          random = random / 2;
+        }
+        vector<node*> prev(4);  
+        node* x = findGreaterOrEqual(num, prev);
+        /*if(x != NULL && x->val == num)
+          return;*/
+        node* t = new node(num);
+        for(int i=0; i<=level; i++){
+          t->next[i] = prev[i]->next[i];
+          prev[i]->next[i] = t;
+        }
+    }
+
+    bool erase(int num) {
+        vector<node*> prev(4);  
+        node* x = findGreaterOrEqual(num, prev);
+        
+        if(x != NULL && x->val == num){
+          for(int i=0; i<=3; i++){
+            if(prev[i]->next[i] != NULL && prev[i]->next[i]->val == num){
+              prev[i]->next[i] = prev[i]->next[i]->next[i];
+            }
+          }
+          return true;
+        } else {
+          return false;
+        }
+    }
+  
+    node* findGreaterOrEqual(int target, vector<node*>& prev){
+        node* x = head_;
+        int level = 3;
+        while (true) {
+          node* nx = x->next[level];
+          
+          if (nx != NULL &&  nx->val < target) {
+            // Keep searching in this list
+            x = nx;
+          } else {
+            prev[level] = x;
+            if (level == 0) {
+              return nx;
+            } else {
+              // Switch to next list
+              level--;
+            }
+          }
+        }
+    }
+private:
+  node* head_;
+};
+
+
+/**
+ * Your Skiplist object will be instantiated and called as such:
+ * Skiplist* obj = new Skiplist();
+ * bool param_1 = obj->search(target);
+ * obj->add(num);
+ * bool param_3 = obj->erase(num);
+ */
