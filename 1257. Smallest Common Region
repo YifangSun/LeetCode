@@ -1,0 +1,73 @@
+class node {
+public:
+    node* parent;
+    vector<node*> child;
+    string place;
+    node(){
+        parent = NULL;
+        place = "";
+    }
+    node(string a){
+        parent = NULL;
+        place = a;
+    }
+};
+
+class Solution {
+public:
+    string findSmallestRegion(vector<vector<string>>& regions, string region1, string region2) {
+        string s;
+        unordered_map<string, node*> ma;
+        set<string> s1, s2;
+        for(auto region_i:regions){
+            node* parent_i;
+            if( ma.count(region_i[0]) )
+                parent_i = ma[region_i[0]];
+            else{
+                parent_i = new node(region_i[0]);
+                ma[region_i[0]] = parent_i;
+            }
+                
+            
+            for(int n=1; n<region_i.size(); n++){ // every child
+                node* child_n;
+                if( ma.count( region_i[n]) )
+                    child_n = ma[region_i[n]];
+                else{
+                    child_n = new node(region_i[n]);
+                    ma[region_i[n]] = child_n;
+                }
+                
+                parent_i->child.push_back(child_n);
+                child_n->parent = parent_i;
+
+            }
+        }
+        /*
+        for(auto aa:ma["Canada"]->child){
+            cout << aa->parent->place << endl;
+        }*/
+        node* pt1 = ma[region1];
+        node* pt2 = ma[region2];
+        while(pt1!=NULL && pt2!=NULL){
+            if(pt1!=NULL){
+                if(s2.count(pt1->place)){
+                    return pt1->place;
+                }
+                s1.insert( pt1->place );
+                if(pt1->parent!=NULL)
+                    pt1 = pt1->parent;
+            }
+            if(pt2!=NULL){
+                if(s1.count(pt2->place)){
+                    return pt2->place;
+                }
+                s2.insert( pt2->place );
+                if(pt2->parent!=NULL)
+                    pt2 = pt2->parent;
+            }
+
+        }
+        return s;
+    }
+};
