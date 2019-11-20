@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<vector<int>> shiftGrid(vector<vector<int>>& grid, int k) {
+        int col = grid.size();
+        int row = grid[0].size();
+        vector<vector<int>> ans(grid);
+        for(int i=0; i<col; i++){
+            for(int j=0; j<row; j++){
+                int before = i * row + j;
+                int after;
+                if((before + k + 1) % (col * row) == 0)
+                    after = (before + k) % (col * row);
+                else
+                    after = (before + k + 1) % (col * row) - 1;
+                //cout << before << " " << after << " ";
+                ans[after / row][after % row] = grid[i][j];
+            }
+        }
+        return ans;
+    }
+};
