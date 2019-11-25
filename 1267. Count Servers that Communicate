@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int countServers(vector<vector<int>>& g) {
+        unordered_map<int, vector<int>> col, row;
+        set<int> se;
+        for(int i=0; i<g.size(); i++){
+            for(int j =0; j<g[0].size(); j++){
+                int pos = i * g[0].size() + j;
+                if(g[i][j]){
+                    row[i].push_back(pos);
+                    col[j].push_back(pos);
+                }
+            }
+        }
+        for(unordered_map<int, vector<int>>::iterator it = col.begin(); it!= col.end(); it++){
+            if(it->second.size() > 1){
+                for(auto aa:it->second){
+                    se.insert(aa);
+                }
+            }
+        }
+        for(unordered_map<int, vector<int>>::iterator it = row.begin(); it!= row.end(); it++){
+            if(it->second.size() > 1){
+                for(auto aa:it->second){
+                    se.insert(aa);
+                }
+            }
+        }
+        return se.size();
+    }
+};
