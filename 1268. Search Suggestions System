@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<vector<string>> suggestedProducts(vector<string>& products, string sw) {
+        vector<vector<string>> ans;
+        map<string, set<string>> ma;
+        for(auto aa:products){
+            for(int i=1; i<=aa.size(); i++){
+                ma[aa.substr(0,i)].insert(aa);
+            }
+        }
+        for(int i=1; i<=sw.size(); i++){
+            vector<string> thisAns;
+            if( ma.count( sw.substr(0,i) ) ){
+                int f=0;
+                for(set<string>::iterator it = ma[sw.substr(0,i)].begin(); it!= ma[sw.substr(0,i)].end() && f<3; it++){
+                    f++;
+                    thisAns.push_back(*it);
+                }
+            }
+            ans.push_back(thisAns);
+        }
+        
+        return ans;
+    }
+};
