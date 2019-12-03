@@ -1,0 +1,56 @@
+class node{
+public:
+    node(int n){
+        val = n;
+    }
+    vector<node*> child;
+    int val;
+};
+
+
+
+class Solution {
+public:
+    int deleteTreeNodes(int nodes, vector<int>& parent, vector<int>& value) {
+        
+        for(int i=0; i<nodes; i++){
+            node* t = new node(value[i]);
+            ma[i] = t;
+            if(parent[i] != -1){
+                ma[parent[i]]->child.push_back(t);
+            }
+        }
+        helper(ma[0]);
+        if(ma[0]->val == 0)
+            return 0;
+        queue<node*> q;
+        q.push(ma[0]);
+        int ret = 1;
+        while(!q.empty()){
+            node* t = q.front();
+            q.pop();
+            for(auto aa:t->child){
+                if(aa->val != 0){
+                    ret++;
+                    q.push(aa);
+                }
+            }
+        }
+        return ret;
+    }
+    
+    int helper(node* root){
+        int sum = root->val;
+        for(auto aa:root->child){
+            if(aa->child.size() == 0){
+                sum += aa->val;
+            }else{
+                sum += helper(aa);
+            }
+        }
+        root->val = sum;
+        return sum;
+    }
+private:
+    unordered_map<int, node*> ma;
+};
