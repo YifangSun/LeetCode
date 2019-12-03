@@ -1,0 +1,44 @@
+class Solution {
+public:
+    string tictactoe(vector<vector<int>>& moves) {
+        vector<vector<char>> d(3, vector<char>(3));
+        char ans;
+        for(int i=0; i<moves.size(); i++){
+            if(i & 1){ // 奇数
+                d[moves[i][0]][moves[i][1]] = 'O';
+            }else{ //偶数
+                d[moves[i][0]][moves[i][1]] = 'X';
+            }
+            ans = checkAns(d);
+            if(ans == 'X')
+                return "A";
+            else if(ans == 'O')
+                return "B";
+        }
+        if(moves.size() == 9)
+            return "Draw";
+        else 
+            return "Pending";    
+    }
+    char checkAns(vector<vector<char>>& a){
+        
+        if(a[0][0] == a[0][1] && a[0][1] == a[0][2])
+            return a[0][0];
+        else if(a[1][0] == a[1][1] && a[1][1] == a[1][2])
+            return a[1][0];
+        else if(a[2][0] == a[2][1] && a[2][1] == a[2][2])
+            return a[2][0];
+        else if(a[0][0] == a[1][0] && a[1][0] == a[2][0])
+            return a[0][0];
+        else if(a[0][1] == a[1][1] && a[1][1] == a[2][1])
+            return a[0][1];
+        else if(a[0][2] == a[1][2] && a[1][2] == a[2][2])
+            return a[0][2];
+        else if(a[0][0] == a[1][1] && a[1][1] == a[2][2])
+            return a[0][0];
+        else if(a[2][0] == a[1][1] && a[1][1] == a[0][2])
+            return a[2][0];
+        else 
+            return '#';
+    }
+};
