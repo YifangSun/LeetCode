@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<int> numOfBurgers(int t, int c) {
+        vector<int> ans;
+        if(t & 1)
+            return ans;
+        long long int _t = (long long int)t;
+        long long int _low = (long long int)(2*c);
+        long long int _upp = (long long int)(4*c);
+        //cout << _low << " " << _upp << endl;
+        if(_t > _upp || _t < _low)
+            return ans;
+        
+        int duoyu = t - 2 * c;
+        duoyu = duoyu / 2;
+        ans = {duoyu, c - duoyu};
+        return ans;
+    }
+};
