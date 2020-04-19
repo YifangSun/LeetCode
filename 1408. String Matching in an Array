@@ -1,0 +1,29 @@
+bool cmp(const string &a,const string &b)
+{
+    return a.size()>b.size();
+}
+
+class Solution {
+public:
+    
+    vector<string> stringMatching(vector<string>& words) {
+        vector<string> ans;
+        set<string> se;
+        sort(words.begin(), words.end(), cmp);
+        for(auto aa:words){
+            if(se.find(aa)!=se.end())
+                ans.push_back(aa);
+            for(int i=1; i<aa.size(); i++){
+                for(int j=0; (j+i)<=aa.size(); j++){
+                    se.insert(aa.substr(j,i));
+                }
+            }
+        }
+        
+        
+        /*for(auto aa:words)
+            cout << aa << " ";
+        cout << endl;*/
+        return ans;
+    }
+};
