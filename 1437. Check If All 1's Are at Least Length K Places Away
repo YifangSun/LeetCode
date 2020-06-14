@@ -1,0 +1,20 @@
+class Solution {
+public:
+    bool kLengthApart(vector<int>& nums, int k) {
+        int len = nums.size();
+        //cout << len << endl;
+        int minDist = len+1;
+        int last = -1 * minDist;
+        for(int i=0; i<nums.size(); i++){
+            if(nums[i] == 1){
+                
+                minDist = min(minDist, i-last-1);
+                //cout << minDist <<endl;
+                last = i;
+            }
+            if(minDist ==0)
+                break;
+        }
+        return minDist>=k;
+    }
+};
