@@ -1,0 +1,36 @@
+typedef long long ll;
+
+class Solution {
+public:
+    int minDays(vector<int>& bloomDay, int m, int k) {
+        int len = bloomDay.size();
+        ll mk = m * (ll)k;
+        if(mk > len)
+            return -1;
+        
+        int l = 0, r = 1e9;
+        while(l < r){
+            // cout << l <<" " << r << endl;
+            int mid = (l + r) / 2;
+            int amt = 0;
+            int count = 0;
+            for(auto day : bloomDay){
+                if(day <= mid)   
+                    count++;
+                else
+                    count = 0;
+                
+                if(count == k){
+                    count = 0;
+                    amt++;
+                } 
+            }
+            
+            if(amt >= m)
+                r = mid;
+            else
+                l = mid + 1;
+        }
+        return l;
+    }
+};
