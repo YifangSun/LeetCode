@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int findLeastNumOfUniqueInts(vector<int>& arr, int k) {
+        map<int, int> num2times;
+        map<int, vector<int> > times2num;
+        int uniq = 0;
+        
+        for(auto aa:arr)
+            num2times[aa]++;
+        
+        for(auto aa:num2times){
+            uniq++;
+            times2num[aa.second].push_back(aa.first);
+            
+            // cout << aa.first << " " << aa.second << endl;
+        }
+        
+        for(auto aa:times2num){
+            //cout << aa.first << " " << aa.second[0] << endl;
+            int times = aa.first;
+            for(auto least_time:aa.second){
+                if(k > times){
+                    k -= times;
+                    uniq--;
+                }else if(k == times){
+                    return uniq-1;
+                }else if(k < times){
+                    return uniq;
+                }
+            }
+        }
+        
+        return uniq;
+    }
+};
