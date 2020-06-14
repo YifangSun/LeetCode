@@ -1,0 +1,15 @@
+class Solution {
+public:
+    string destCity(vector<vector<string>>& paths) {
+        string str;
+        set<string> s;
+        for(auto &aa:paths){
+            s.insert(aa[0]);
+        }
+        for(auto &aa:paths){
+            if( s.find(aa[1])==s.end() )
+                return aa[1];
+        }
+        return str;
+    }
+};
