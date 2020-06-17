@@ -1,0 +1,48 @@
+class node{
+public:
+    int h;
+    int lb;
+    node():h(0), lb(0){};
+    node(int _h, int _lb):h(_h), lb(_lb){};
+    ~node(){};
+};
+
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        int n = heights.size();
+        stack<node> s;
+        node a[n+1];
+        int ans = 0;
+
+
+        s.push(node());
+        for(int i=0; i<n; i++){
+            a[i].h = heights[i];
+            a[i].lb = i+1;
+        }
+        a[n].h = 0;
+        a[n].lb = n+1;
+        for(int i=0; i<=n; i++){
+          if(a[i].h > s.top().h){
+            s.push(a[i]);
+          }else{
+            int leftest = 0;
+            while(a[i].h < s.top().h){
+              node t = s.top(); s.pop();
+              // cout << i << " " << (i + 1 - t.lb) * t.h << endl;
+              ans = max(ans, (i + 1 - t.lb) * t.h);
+              leftest = t.lb;      
+            }  
+            if(a[i].h > s.top().h){
+              a[i].lb = leftest;
+              s.push(a[i]);
+            }
+            
+          }
+            
+        }
+
+        return ans;
+    }
+};
