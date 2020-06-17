@@ -1,0 +1,71 @@
+class node{
+public:
+    int h;
+    int lb;
+    node():h(0), lb(0){};
+    node(int _h, int _lb):h(_h), lb(_lb){};
+    ~node(){};
+};
+
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        int n = heights.size();
+        stack<node> s;
+        node a[n+1];
+        int ans = 0;
+
+
+        s.push(node());
+        for(int i=0; i<n; i++){
+            a[i].h = heights[i];
+            a[i].lb = i+1;
+            // cout << a[i].h << " ";
+        }   // cout << endl;
+        a[n].h = 0;
+        a[n].lb = n+1;
+        for(int i=0; i<=n; i++){
+          if(a[i].h > s.top().h){
+            s.push(a[i]);
+          }else{
+            int leftest = 0;
+            while(a[i].h < s.top().h){
+              node t = s.top(); s.pop();
+              // cout << i << " " << (i + 1 - t.lb) * t.h << endl;
+              ans = max(ans, (i + 1 - t.lb) * t.h);
+              leftest = t.lb;
+            }
+            if(a[i].h > s.top().h){
+              a[i].lb = leftest;
+              s.push(a[i]);
+            }
+          }
+        }
+
+        return ans;
+    }
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        int row = matrix.size();
+        if(row == 0)    return 0;
+        int col = matrix[0].size();
+        if(col == 0)    return 0;
+        int max_ans = 0;
+        vector<vector<int> > v(row, vector<int>(col));
+
+        for(int i=0; i<col; i++)
+          v[0][i] = matrix[0][i] - '0';
+
+        for(int j=1; j<row; j++){
+            for(int i=0; i<col; i++){
+                v[j][i] = (matrix[j][i] == '0') ? 0 :v[j-1][i] + (matrix[j][i]-'0');
+                // cout << v[j][i] << " | ";
+            }   // cout << endl;
+        }
+        for(int j=0; j<row; j++){
+            // cout << j << endl;
+            int ans = largestRectangleArea(v[j]);
+            max_ans = max(max_ans, ans);
+        }
+        return max_ans;
+    }
+};
