@@ -1,0 +1,51 @@
+class Solution {
+public:
+    int binarySearch(vector<int>& arr, int start, int find){
+        int l = start, r = arr.size() - 1;
+        while(l < r){
+            int m = (l + r) / 2;
+            if(arr[m] == find)
+                return m;
+            else if(arr[m] > find)
+                r = m;
+            else
+                l = m + 1;
+        }
+        return l;
+    }
+    
+    int minSumOfLengths(vector<int>& arr, int target) {
+        int n = arr.size();
+        vector<int> s(n+1, 0);
+        vector<vector<int> > ans;
+        for(int i=0; i<arr.size(); i++){
+            s[i+1] = arr[i] + s[i];
+        }
+        
+        for(int i=0; i<n; i++){
+            int end = binarySearch(s, i, s[i] + target);
+            // cout << s[i] << " " << s[end] << " " << end << endl;
+            if(s[end] == (s[i] + target)){
+                ans.push_back({i, end});
+            }
+        }
+        // for(auto aa:ans){   for(auto a:aa) cout << a << " "; cout << endl;    } cout << endl;
+        
+        int q = ans.size() - 1;
+        int minans = 999999999;
+        int minlen = 999999999;
+        for(int i = ans.size()-1; i>=0; i--){
+            while(ans[i][1] <= ans[q][0]){
+                minlen = min(minlen, ans[q][1] - ans[q][0]);
+                q--;
+            }
+                
+            
+            minans = min(minans, ans[i][1] - ans[i][0] + minlen);
+           
+        }
+        
+        
+        return minans == 999999999 ? -1 : minans;
+    }
+};
