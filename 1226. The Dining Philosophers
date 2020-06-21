@@ -1,0 +1,52 @@
+int lt[] = {0, 1, 2, 3, 4};
+int rt[] = {4, 0, 1, 2, 3};
+bool used[5] = {false, false, false, false, false};
+mutex mtx[5];
+mutex phi;
+
+condition_variable cv;
+
+class DiningPhilosophers {
+public:
+    DiningPhilosophers() {
+        
+    }
+
+    void wantsToEat(int p,
+                    function<void()> pickLeftFork,
+                    function<void()> pickRightFork,
+                    function<void()> eat,
+                    function<void()> putLeftFork,
+                    function<void()> putRightFork) {
+        unique_lock<mutex> unq_lk(phi, defer_lock);
+        while(1){
+            if(!used[lt[p]] && !used[rt[p]]){
+                mtx[lt[p]].lock();
+                used[lt[p]] = true;
+                pickLeftFork();
+                if(!used[rt[p]]){
+                    mtx[rt[p]].lock();
+                    used[rt[p]] = true;
+                    pickRightFork();
+                    break;
+                }else{
+                    used[lt[p]] = false;
+                    putLeftFork();
+                    mtx[lt[p]].unlock(); 
+                    cv.wait(unq_lk);
+                }
+            }
+        }
+        
+        eat();
+        // cout << p << " eat" << endl;
+        putLeftFork();
+        used[lt[p]] = false;
+        putRightFork();
+        used[rt[p]] = false;
+        mtx[lt[p]].unlock(); 
+        mtx[rt[p]].unlock(); 
+        cv.notify_all();
+        
+    }
+};
