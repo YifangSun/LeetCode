@@ -1,0 +1,33 @@
+class Solution {
+private:
+    unordered_map<int, int> m;
+    unordered_map<int, int> ans_m;
+    
+public:
+    int longestConsecutive(vector<int>& nums) {
+        int n = nums.size();
+        if(n == 0)  return 0;
+        
+        set<int> s;
+        int mx = 0;
+        for(int i = 0; i < n; i++){
+            m[ nums[i] ] = nums[i] - 1;
+        }
+        for(int i = 0; i < n; i++){
+            if(!s.count(nums[i])){
+                ans_m[ find(nums[i]) ]++;
+                s.insert(nums[i]);
+            }
+        }
+        for(auto aa:ans_m){
+            mx = max(mx, aa.second);
+        }
+        return mx;
+    }
+    int find(int i){
+        if(m.count( m[i] ))
+            return m[i] = find(m[i]);
+        else
+            return m[i];
+    }
+};
