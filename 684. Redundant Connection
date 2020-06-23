@@ -1,0 +1,32 @@
+class Solution {
+public:
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        int n = edges.size();
+        int ans = 0;
+        vector<int> root(1005);
+        for(int i = 0; i <= n; i++){
+            root[i] = i;
+            
+        }   
+        
+        for(int i = 0; i < n; i++){
+            // cout << i << " " << edges[i][0] << " " << edges[i][1] <<endl;
+            int a = find(edges[i][0], root);    // cout << a << " "; 
+            int b = find(edges[i][1], root);    // cout << b << endl;
+            
+            if(a == b)
+                ans = i;
+            else
+                root[a] = b;
+            //for(int i = 0; i <= n; i++)  cout << root[i]<< " "; cout << endl;
+        }
+        return edges[ans];
+    }
+    
+    int find(int i, vector<int>& root){
+        if(i == root[i])
+            return i;
+        else
+            return root[i] = find(root[i], root);
+    }
+};
