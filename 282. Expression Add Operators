@@ -1,0 +1,56 @@
+typedef long long ll;
+class Solution {
+private:
+    string buf;
+    vector<string> ans;
+
+public:
+    Solution():buf(), ans(){};
+    void helper(int i, ll sum, ll prod, string& num, int& target){
+        // cout << buf << endl;
+        if(i == num.size()){
+            ll result = sum + prod;
+            if(result == target){    ans.push_back(buf);    cout << sizeof(result) << " " << result << endl;}
+            return;
+        }       
+        
+        int sz = buf.size();
+        buf.push_back('#');
+        ll series = 0;
+        for(int j = i; j < num.size(); j++){
+            series *= 10;
+            series += num[j] - '0';
+            buf.push_back(num[j]);
+            
+            // *
+            buf[sz] = '*';
+            helper(j+1, sum, prod * series, num, target);
+            
+            // +
+            buf[sz] = '+';
+            helper(j+1, sum + prod, series, num, target);
+            
+            // -
+            buf[sz] = '-';
+            helper(j+1, sum + prod, -series, num, target);
+            
+            if(j == i && num[i] == '0')
+                break;
+        }
+        buf.resize(sz);
+    };
+    
+    vector<string> addOperators(string num, int target) {
+        ll series = 0;
+        for(int i = 0; i < num.size(); i++){
+            series *= 10;
+            series += num[i] - '0';
+            
+            buf.push_back(num[i]);
+            helper(i+1, 0, series, num, target);
+            if(i == 0 && num[i] == '0')
+                break;
+        }
+        return ans;
+    }
+};
