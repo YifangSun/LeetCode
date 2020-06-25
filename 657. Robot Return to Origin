@@ -1,0 +1,27 @@
+class Solution {
+public:
+    bool judgeCircle(string moves) {
+        int n = moves.size();
+        cout << n << endl;
+        
+        int x = 0, y = 0;
+        
+        for(auto c:moves){
+            if(c == 'L')
+                x = x-1;
+            if(c == 'R')
+                x = x+1;
+            if(c == 'U')
+                y = y+1;
+            if(c == 'D')
+                y = y-1;
+        }
+        
+        cout << x << " " << y << endl;
+        
+        if(x == 0 && y == 0)
+            return true;
+        else
+            return false;
+    }
+};
