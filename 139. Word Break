@@ -4,19 +4,16 @@ public:
         int n = s.size();
         if(n == 0)  return 0;
         
-        vector<int> dp(n+1, 0);
-        unordered_map<int, set<string> > umap;
-        for(auto aa:wordDict){
-            umap[aa.size()].insert(aa);
-        }
+        vector<bool> dp(n+1, 0);
 
-        dp[0] = 1;
+        dp[0] = true;
         for(int i=1; i<=n; i++){
-            for(auto aa:umap){
-                int len = aa.first;  
+            for(auto aa:wordDict){
+                int len = aa.size();  
                 if(i - len >= 0){
-                    if(aa.second.count(s.substr(i - len, len)) ){
-                        dp[i] = (dp[i - len] & 1) | dp[i]; 
+                    if(aa == s.substr(i - len, len) && dp[i - len]){
+                        dp[i] = true;
+                        break;
                     }
                 }
             }
@@ -25,4 +22,7 @@ public:
         //for(auto aa:dp) cout << aa << " "; cout << endl;
         return dp[n];
     }
+    
+    
+    
 };
