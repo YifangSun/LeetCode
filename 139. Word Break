@@ -1,0 +1,28 @@
+class Solution {
+public:
+    bool wordBreak(string s, vector<string>& wordDict) {
+        int n = s.size();
+        if(n == 0)  return 0;
+        
+        vector<int> dp(n+1, 0);
+        unordered_map<int, set<string> > umap;
+        for(auto aa:wordDict){
+            umap[aa.size()].insert(aa);
+        }
+
+        dp[0] = 1;
+        for(int i=1; i<=n; i++){
+            for(auto aa:umap){
+                int len = aa.first;  
+                if(i - len >= 0){
+                    if(aa.second.count(s.substr(i - len, len)) ){
+                        dp[i] = (dp[i - len] & 1) | dp[i]; 
+                    }
+                }
+            }
+        }
+        
+        //for(auto aa:dp) cout << aa << " "; cout << endl;
+        return dp[n];
+    }
+};
