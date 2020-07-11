@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int maxPathSum(TreeNode* root) {
+        int nowMax = INT_MIN;
+        longest_path(root, nowMax);
+        return nowMax;
+    }
+    
+    int longest_path(TreeNode* root, int& nowMax){
+        if(root == nullptr)
+            return 0;
+        
+        int a = 0, b = 0;
+        if(root->left)
+            a = max(a, longest_path(root->left, nowMax));
+        if(root->right)
+            b = max(b, longest_path(root->right, nowMax));
+        
+        nowMax = max(a + b + root->val, nowMax);
+        return max(a, b) + root->val;
+    }
+};
