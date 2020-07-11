@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int findMin(vector<int>& nums) {
+        int n = nums.size();
+        if(n == 0)  return 0;
+        
+        int l = 0, r = n - 1;
+        while(l < r){
+            while(r > 0 && nums[r-1] == nums[r])    r--;
+            while(l < n-1 && nums[l+1] == nums[l])    l++;
+            cout << l << " " << r << endl;
+            
+            int m = (r - l) / 2 + l;
+            if(nums[m] > nums[r])
+                l = m + 1;
+            else if(nums[m] <= nums[r])
+                r = m;
+        }
+        return nums[l];
+    }
+};
