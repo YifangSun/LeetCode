@@ -1,0 +1,57 @@
+class Solution {
+public:
+    int minDifference(vector<int>& nums) {
+        if(nums.size() <= 4)
+            return 0;
+        
+        vector<int> diff;
+        vector<int> mx(4, INT_MIN);
+        vector<int> mn(4, INT_MAX);
+        // int mn[4] = {nums[0]};
+        // int mx[4] = {nums[0]};
+        for(auto aa:nums){
+            if(aa < mn[0]){
+                mn[3] = mn[2];
+                mn[2] = mn[1];
+                mn[1] = mn[0];
+                mn[0] = aa;
+            }else if(aa >= mn[0] && aa < mn[1]){
+                mn[3] = mn[2];
+                mn[2] = mn[1];
+                mn[1] = aa;
+            }else if(aa >= mn[1] && aa < mn[2]){
+                mn[3] = mn[2];
+                mn[2] = aa;
+            }else if(aa >= mn[2] && aa < mn[3]){
+                mn[3] = aa;
+            }
+            
+            if(aa > mx[3]){
+                mx[0] = mx[1];
+                mx[1] = mx[2];
+                mx[2] = mx[3];
+                mx[3] = aa;
+            }else if(aa <= mx[3] && aa > mx[2]){
+                mx[0] = mx[1];
+                mx[1] = mx[2];
+                mx[2] = aa;
+            }else if(aa <= mx[2] && aa > mx[1]){
+                mx[0] = mx[1];
+                mx[1] = aa;
+            }else if(aa <= mx[1] && aa > mx[0]){
+                mx[0] = aa;
+            }
+        }
+        
+        // for(auto aa:mn) cout << aa <<" "; cout << endl; 
+        // for(auto aa:mx) cout << aa <<" "; cout << endl; 
+        
+        for(int i=0; i<4; i++)
+                diff.push_back(abs( mn[i] - mx[i] ));
+
+        
+        // for(auto aa:diff) cout << aa <<" "; cout << endl; 
+        
+        return *min_element(diff.begin(), diff.end());
+    }
+};
