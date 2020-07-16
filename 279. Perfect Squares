@@ -1,57 +1,13 @@
-/*************
- * Solution 1
-/*************
 class Solution {
 public:
     int numSquares(int n) {
-        vector<int> dic;
-        queue<int> q,next;
-        int ans = 1;
-        for(int i=1;  ; i++){
-            if(i*i > n)
-                break;
-            dic.push_back(i*i);
-        }
-        /*for(int aa:dic)
-            cout << aa << ' ';
-        cout << endl;*/
-        q.push(n);
-        while(!q.empty()){
-            int temp = q.front();
-            q.pop();
-            for(int i=dic.size()-1; i>=0; i--){
-                if( dic[i]<temp )    
-                    next.push( temp-dic[i] );
-                else if( dic[i]==temp ) 
-                    return ans;
-            }
-            if(q.empty()){
-                q.swap(next);
-                ans++;
-            }
-        }
-        return 0;
-    }
-};
-
-
-/*************
- * Solution 2
-/*************
-class Solution {
-public:
-    int numSquares(int n) {
-       static vector<int> dp(490001,490001);
-       static int max_n_so_far=1; 
-       if(n<max_n_so_far)
-           return dp[n];
+        vector<int> dp(n + 1, INT_MAX);
+        dp[0] = 0;
         
-        dp[0]=0;
-        for(int i=max_n_so_far;i<=n;i++)
-            for(int j=1;j*j<=i;j++)
-                dp[i]=min(dp[i],1+dp[i-j*j]);
-        
-        max_n_so_far=max(n,max_n_so_far);
+        for(int i=1; i<=n; i++)
+            for(int k = 1; k * k <= i; k++){
+                dp[i] = min(dp[i], dp[i - k * k] + 1);
+            }
         return dp[n];
     }
 };
