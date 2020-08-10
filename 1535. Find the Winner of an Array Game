@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int getWinner(vector<int>& arr, int k) {
+        int len = arr.size();
+        int mx = INT_MIN;
+        bool flag = true;
+        for(int i=1; i<=k && i < len; i++)
+            if(arr[0] < arr[i]) flag = false;
+        if(flag)    
+            return arr[0];
+        
+        mx = max(mx, arr[0]);
+        for(int p=1; p < len; p++){
+            flag = true;
+            if(arr[p] < mx){
+                continue;
+            }else{
+                mx = max(mx, arr[p]);
+            }
+            
+            for(int i=1; i <= k-1 && i+p < len; i++){
+                if(arr[p] < arr[p+i]){
+                    flag = false;
+                    continue;
+                }
+            }
+            
+            if(flag)    
+                return arr[p];
+        }
+        return arr[0];
+    }
+};
