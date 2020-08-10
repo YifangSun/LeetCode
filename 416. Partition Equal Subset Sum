@@ -1,0 +1,20 @@
+class Solution {
+public:
+    bool canPartition(vector<int>& nums) {
+        int n = nums.size();
+        int sum = accumulate(nums.begin(), nums.end(), 0);
+        if(sum& 1)
+            return false;
+        
+        vector<int> dp(sum + 1);
+        dp[0] = 1;
+        for(auto aa:nums){
+            for(auto i = sum >> 1; i >= 0; i--){
+                if(dp[i])   dp[i + aa] = 1;
+            }
+            if(dp[ sum >> 1])
+                return true;
+        }
+        return false;
+    }
+};
