@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int minFlips(string target) {
+        char stat = '0';
+        int cnt = 0;
+        for(auto aa:target){
+            if(aa != stat){
+                cnt++;
+                stat = aa;
+                //cout << aa << endl;
+            } 
+        }
+        return cnt;
+    }
+};
