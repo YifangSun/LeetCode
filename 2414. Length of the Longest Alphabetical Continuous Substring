@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int longestContinuousSubstring(string s) {
+        int sz = s.size();
+        
+        vector<int> v(sz, 1);
+        
+        for (int i = 1; i < s.size(); i++) {
+            if (s[i] - s[i-1] == 1) 
+                v[i] = v[i-1] + 1;
+            
+        }
+        // for(auto& a : v) cout << a << " ";
+        return *max_element(v.begin(),v.end()); ;
+    }
+};
