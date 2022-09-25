@@ -36,3 +36,38 @@ public:
         return;
     }
 };
+
+/**
+ * Solution 2
+ */
+class Solution {
+public:
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        vector<vector<int>> ans;
+        if(root == nullptr) return ans;
+        
+        queue<TreeNode*> q;
+        q.push(root);
+        while(!q.empty()) {
+            vector<int> this_level;
+            int num = q.size();
+            while(num--) {
+                TreeNode* now = q.front();
+                q.pop();
+                this_level.push_back(now->val);
+                    
+                if(now->left) {
+                    q.push(now->left);
+                }
+                if(now->right) {
+                    q.push(now->right);
+                }
+            }
+            ans.push_back(this_level);
+        }
+        
+        
+        
+        return ans;
+    }
+};
